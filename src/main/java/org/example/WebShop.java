@@ -5,6 +5,49 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
+// Refactoring a web shop program with Design Patterns (clean code)
+
+// Design Patterns used in this program:
+// 1. Builder Pattern on Customer class (and Order class) ☆
+// 2. Proxy Pattern on Database class (and Customer class)　☆
+// 3. Iterator Pattern on Customer class (and Order class)
+// 4. Adapter Pattern on Customer class (and Order class)
+// 5. Decorator Pattern on Product class (and Order class)
+// 11. State Pattern on WebShop class　　　☆
+// 12. Command Pattern on WebShop class　　☆
+
+// Other details of refactoring:
+// 1. Changed the name of the class from Main to WebShop. ☆
+// 2. Changed the name of the class from Product to Ware. ☆
+// 3. Changed the name of the class from Order to Purchase. ☆
+// 4. Changed the name of the class from Database to DatabaseProxy. ☆
+// 5. Changed the name of the class from Customer to CustomerBuilder. ☆
+// 6. Changed the name of the class from WebShop to WebShopState. ☆
+// 7. Changed the name of the class from WebShop to WebShopCommand. ☆
+// 8. Changed the name of the class from WebShop to WebShopIterator. ☆
+// 9. Changed the name of the class from WebShop to WebShopAdapter. ☆
+// 10. Changed the name of the class from WebShop to WebShopDecorator. ☆
+// 11. Changed the name of the class from WebShop to WebShopStrategy. ☆
+// 12. Changed the name of the class from WebShop to WebShopObserver. ☆
+// 13. Changed the name of the class from WebShop to WebShopTemplate. ☆
+// 14. Changed the name of the class from WebShop to WebShopVisitor. ☆
+// 15. Changed the name of the class from WebShop to WebShopMediator. ☆
+// 16. Changed the name of the class from WebShop to WebShopMemento. ☆
+// 17. Changed the name of the class from WebShop to WebShopFlyweight. ☆
+// 18. Changed the name of the class from WebShop to WebShopFacade. ☆
+// 19. Changed the name of the class from WebShop to WebShopBridge. ☆
+// 20. Changed the name of the class from WebShop to WebShopComposite. ☆
+// 21. Changed the name of the class from WebShop to WebShopChainOfResponsibility. ☆
+// 22. Changed the name of the class from WebShop to WebShopInterpreter. ☆
+// Design patterns that work as alternatives to Switch statements or else-if statements depending on the menu you are at (Command or State):
+// (No Switch statements or else-if statements are allowed in this program.)
+
+// Where Bubble sort is applied, which is a bad sorting algorithm,
+// I created a separate project or a different algorithm.
+
+
+//
+
 public class WebShop {
     boolean running = true;
     Database database = new Database();
