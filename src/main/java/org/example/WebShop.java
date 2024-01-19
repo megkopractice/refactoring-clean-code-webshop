@@ -8,7 +8,7 @@ import java.util.Scanner;
 // Refactoring a web shop program with Design Patterns (clean code)
 
 // Design Patterns used in this program:
-// 1. Builder Pattern on Customer class (and Order class) ☆
+// 1. Builder Pattern on Customer class (and Order class) ☆ OK
 // 2. Proxy Pattern on Database class (and Customer class)　☆
 // 3. Iterator Pattern on Customer class (and Order class)
 // 4. Adapter Pattern on Customer class (and Order class)

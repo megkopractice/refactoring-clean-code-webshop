@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.ArrayList;
 
+/**
+ * This class is an imitation of a real database *
+ */
+
 public class Database {
     // We just pretend this accesses a real database.
     private ArrayList<Product> productsInDatabase;
@@ -20,16 +24,30 @@ public class Database {
         productsInDatabase.add(new Product("Bed", 20000, 2));
 
         customersInDatabase = new ArrayList<Customer>();
-        customersInDatabase.add(new Customer("jimmy", "jimisthebest", "Jimmy", "Jamesson", "jj@mail.com", 22, "Big Street 5", "123456789"));
-        customersInDatabase.add(new Customer("jake", "jake123", "Jake", null, null, 0, null, null));
+        // We use the Builder pattern to create the Customer objects.
+        customersInDatabase.add(new Customer.Builder("jimmy")
+                                        .password("jimisthebest")
+                                        .firstName("Jimmy")
+                                        .lastName("Jamesson")
+                                        .email("jj@mail.com")
+                                        .age(22).address("Big Street 5")
+                                        .phoneNumber("123456789")
+                                        .build());
+
+        // We use the Builder pattern to create the Customer objects.
+        customersInDatabase.add(new Customer.Builder("jake")
+                                        .password("jake123")
+                                        .firstName("Jake")
+                                        .age(0)
+                                        .build());
     }
 
-    public ArrayList<Product> GetProducts()
+    public ArrayList<Product> getProducts()
     {
         return productsInDatabase;
     }
 
-    public ArrayList<Customer> GetCustomers()
+    public ArrayList<Customer> getCustomers()
     {
         return customersInDatabase;
     }
