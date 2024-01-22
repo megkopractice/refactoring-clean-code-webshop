@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 // Design Patterns used in this program:
 // 1. Builder Pattern on Customer class (and Order class) ☆ OK
-// 2. Proxy Pattern on Database class (and Customer class)　☆
+// 2. Proxy Pattern on Database class (and Customer class)　☆ OK
 // 3. Iterator Pattern on Customer class (and Order class)
 // 4. Adapter Pattern on Customer class (and Order class)
 // 5. Decorator Pattern on Product class (and Order class)
@@ -46,8 +46,9 @@ import java.util.Scanner;
 // I created a separate project or a different algorithm.
 
 
-//
-
+/**
+ * The WebShop class is the main class of the program.
+ */
 public class WebShop {
     boolean running = true;
     Database database = new Database();
@@ -70,8 +71,8 @@ public class WebShop {
     Scanner scanner = new Scanner(System.in);
 
     public WebShop() {
-        products = database.GetProducts();
-        customers = database.GetCustomers();
+        products = database.getProducts();
+        customers = database.getCustomers();
     }
 
     public void Run() {
