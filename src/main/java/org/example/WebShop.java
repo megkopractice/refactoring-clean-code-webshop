@@ -109,7 +109,7 @@ public class WebShop {
             if (currentCustomer != null) {
                 System.out.println("Current user: " + currentCustomer.getUsername());
             } else {
-                System.out.println("Nobody logged in.");
+                System.out.println("You are not logged in.");
             }
 
             String choice = scanner.nextLine().toLowerCase();
@@ -157,7 +157,7 @@ public class WebShop {
                                     currentMenu = "customer menu";
                                 } else {
                                     System.out.println();
-                                    System.out.println("Nobody is logged in.");
+                                    System.out.println("You are not logged in.");
                                     System.out.println();
                                 }
                                 break;
@@ -174,7 +174,7 @@ public class WebShop {
                                     password = null;
                                     currentMenu = "login menu";
                                 } else {
-                                    option3 = "Login";
+                                    option3 = "Logout"; // Changed from "Login". Detected a logical error here.
                                     System.out.println();
                                     System.out.println(currentCustomer.getUsername() + " logged out.");
                                     System.out.println();
