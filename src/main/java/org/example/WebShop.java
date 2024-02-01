@@ -184,7 +184,7 @@ public class WebShop {
                                 break;
                             default:
                                 System.out.println();
-                                System.out.println("Not an option.");
+                                System.out.println("There is no such option. Choose from the available options.");
                                 System.out.println();
                                 break;
                         }
@@ -197,13 +197,13 @@ public class WebShop {
                                 currentCustomer.PrintInfo();
                                 break;
                             case 3:
-                                System.out.println("How many funds would you like to add?");
+                                System.out.println("How much funds would you like to add?");
                                 String amountString = scanner.nextLine();
                                 try {
                                     int amount = Integer.parseInt(amountString);
                                     if (amount < 0) {
                                         System.out.println();
-                                        System.out.println("Don't add negative amounts.");
+                                        System.out.println("Impossible to add negative amounts.");
                                         System.out.println();
                                     } else {
                                         currentCustomer.addFunds(amount);
@@ -213,13 +213,13 @@ public class WebShop {
                                     }
                                 } catch (NumberFormatException e) {
                                     System.out.println();
-                                    System.out.println("Please write a number next time.");
+                                    System.out.println("Please type in amounts.");
                                     System.out.println();
                                 }
                                 break;
                             default:
                                 System.out.println();
-                                System.out.println("Not an option.");
+                                System.out.println("There is no such option. Choose from the available options.");
                                 System.out.println();
                                 break;
                         }
@@ -253,7 +253,7 @@ public class WebShop {
                             default:
                                 back = false;
                                 System.out.println();
-                                System.out.println("Not an option.");
+                                System.out.println("There is no such option. Choose from the available options.");
                                 System.out.println();
                                 break;
                         }
@@ -314,7 +314,7 @@ public class WebShop {
                                     currentMenu = "login menu";
                                     currentChoice = 1;
                                 } else {
-                                    option4 = "Login";
+                                    option4 = "Logout";  // Changed from "Login". Detected a logical error here.
                                     System.out.println();
                                     System.out.println(currentCustomer.getUsername() + " logged out.");
                                     System.out.println();
