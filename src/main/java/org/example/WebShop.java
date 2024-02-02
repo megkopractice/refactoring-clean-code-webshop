@@ -326,7 +326,7 @@ public class WebShop {
                                 break;
                             default:
                                 System.out.println();
-                                System.out.println("Not an option.");
+                                System.out.println("There is no such option. Choose from the available options.");
                                 System.out.println();
                                 break;
                         }
@@ -334,13 +334,13 @@ public class WebShop {
                         switch (currentChoice) {
                             case 1:
                                 System.out.println("A keyboard appears.");
-                                System.out.println("Please input your username.");
+                                System.out.println("Please type in your username.");
                                 username = scanner.nextLine();
                                 System.out.println();
                                 break;
                             case 2:
                                 System.out.println("A keyboard appears.");
-                                System.out.println("Please input your password.");
+                                System.out.println("Please type in your password.");
                                 password = scanner.nextLine();
                                 System.out.println();
                                 break;
@@ -636,7 +636,7 @@ public class WebShop {
                         System.out.println();
                         System.out.println("You're already on the main menu.");
                         System.out.println();
-                    } else if (currentMenu.equals("purchase menu")) {
+                    } else if (currentMenu.equals("wares menu")) { // Detected a logical error here. Changed from "purchase menu".
                         option1 = "See all wares";
                         option2 = "Purchase a ware";
                         option3 = "Sort wares";
