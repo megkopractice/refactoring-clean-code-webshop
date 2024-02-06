@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.List;
+
 
 // Refactoring a web shop program with Design Patterns (clean code)
 
@@ -227,25 +229,25 @@ public class WebShop {
                         boolean back = true;
                         switch (currentChoice) {
                             case 1:
-                                bubbleSort("name", false);
+                                mergeSort("name", false);
                                 System.out.println();
                                 System.out.println("Wares sorted.");
                                 System.out.println();
                                 break;
                             case 2:
-                                bubbleSort("name", true);
+                                mergeSort("name", true);
                                 System.out.println();
                                 System.out.println("Wares sorted.");
                                 System.out.println();
                                 break;
                             case 3:
-                                bubbleSort("price", false);
+                                mergeSort("price", false);
                                 System.out.println();
                                 System.out.println("Wares sorted.");
                                 System.out.println();
                                 break;
                             case 4:
-                                bubbleSort("price", true);
+                                mergeSort("price", true);
                                 System.out.println();
                                 System.out.println("Wares sorted.");
                                 System.out.println();
@@ -583,7 +585,16 @@ public class WebShop {
                                     System.out.println();
                                 }
 
-                                Customer newCustomer = new Customer(newUsername, newPassword, firstName, lastName, email, age, address, phoneNumber);
+                                // Create a new customer using the Builder pattern
+                                Customer newCustomer = new Customer.Builder(newUsername)
+                                        .password(newPassword)
+                                        .firstName(firstName)
+                                        .lastName(lastName)
+                                        .email(email)
+                                        .age(age)
+                                        .address(address)
+                                        .phoneNumber(phoneNumber)
+                                        .build();
                                 customers.add(newCustomer);
                                 currentCustomer = newCustomer;
                                 System.out.println();
@@ -674,6 +685,71 @@ public class WebShop {
         }
     }
 
+    /**
+     * Refactored the bubbleSort method to use the mergeSort algorithm instead.
+     * Sorts the products by the given variable in ascending or descending order.
+     * @param sortBy the variable to sort by
+     * @param isAscending true if the products should be sorted in ascending order, false if they should be sorted in descending order
+     */
+
+    private void mergeSort(String sortBy, boolean isAscending) {
+        products = mergeSortHelper(products, sortBy, isAscending);
+    }
+
+    private ArrayList<Product> mergeSortHelper(ArrayList<Product> productList, String sortBy, boolean isAscending) {
+        int size = productList.size();
+
+        if (size <= 1) {
+            return productList; // Already sorted
+        }
+
+        // Split the list into two halves
+        int mid = size / 2;
+        ArrayList<Product> left = new ArrayList<>(productList.subList(0, mid));
+        ArrayList<Product> right = new ArrayList<>(productList.subList(mid, size));
+
+        // Recursively sort the two halves
+        left = mergeSortHelper(left, sortBy, isAscending);
+        right = mergeSortHelper(right, sortBy, isAscending);
+
+        // Merge the sorted halves
+        return merge(left, right, sortBy, isAscending);
+    }
+
+    private ArrayList<Product> merge(ArrayList<Product> left, ArrayList<Product> right, String sortBy, boolean isAscending) {
+        ArrayList<Product> mergedList = new ArrayList<>();
+        int leftIndex = 0;
+        int rightIndex = 0;
+
+        while (leftIndex < left.size() && rightIndex < right.size()) {
+            if (compareProducts(left.get(leftIndex), right.get(rightIndex), sortBy, isAscending) < 0) {
+                mergedList.add(left.get(leftIndex++));
+            } else {
+                mergedList.add(right.get(rightIndex++));
+            }
+        }
+
+        // Add remaining elements from left and right
+        mergedList.addAll(left.subList(leftIndex, left.size()));
+        mergedList.addAll(right.subList(rightIndex, right.size()));
+
+        return mergedList;
+    }
+
+    private int compareProducts(Product product1, Product product2, String sortBy, boolean isAscending) {
+        if (sortBy.equals("name")) {
+            return isAscending ? product1.getName().compareTo(product2.getName()) :
+                    product2.getName().compareTo(product1.getName());
+        } else if (sortBy.equals("price")) {
+            return isAscending ? Double.compare(product1.getPrice(), product2.getPrice()) :
+                    Double.compare(product2.getPrice(), product1.getPrice());
+        }
+
+        // Handle the case where sortBy is neither "name" nor "price"
+        throw new IllegalArgumentException("Invalid sortBy value: " + sortBy);
+    }
+
+    /*
     private void bubbleSort(String variable, boolean ascending) {
         if (variable.equals("name")) {
             int length = products.size();
@@ -728,5 +804,5 @@ public class WebShop {
                 }
             }
         }
-    }
+    }*/
 }
