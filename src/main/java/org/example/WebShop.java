@@ -44,13 +44,15 @@ import java.util.List;
 // Design patterns that work as alternatives to Switch statements or else-if statements depending on the menu you are at (Command or State):
 // (No Switch statements or else-if statements are allowed in this program.)
 
-// Where Bubble sort is applied, which is a bad sorting algorithm,
-// I created a separate project or a different algorithm.
+// Where Bubble sort is applied, which is a bad sorting algorithm, OK
+
 
 
 /**
  * The WebShop class is the main class of the program.
  */
+
+
 public class WebShop {
     boolean running = true;
     Database database = new Database();
@@ -77,7 +79,66 @@ public class WebShop {
         customers = database.getCustomers();
     }
 
-    public void Run() {
+    public void displayMenu(){
+        System.out.println("Welcome to the WebShop!");
+
+        while(running){
+            System.out.println(info);
+
+            if(currentMenu.equals("purchase menu")){
+                displayPurchaseMenu();
+            }else{
+                displayMainMenu();
+            }
+
+            displayOptions();
+            displayUserStatus();
+            String choice = scanner.nextLine().toLowerCase();
+            handleChoice(choice);
+        }
+    }
+
+    private void displayMainMenu(){
+        System.out.println("1: " + option1);
+        System.out.println("2: " + option2);
+        System.out.println("3: " + option3);
+        if(amountOfOptions > 3){
+            System.out.println("4: " + option4);
+        }
+    }
+
+    private void displayPurchaseMenu(){
+        for(int i = 0; i < amountOfOptions; i++){
+            System.out.println(i + 1 + ": " + products.get(i).getName() + ", " + products.get(i).getPrice() + "kr");
+        }
+        System.out.println("Your funds: " + currentCustomer.getFunds());
+    }
+
+    private void displayOptions(){
+        for(int i = 0; i < amountOfOptions; i++){
+            System.out.print(i + 1 + "\t");
+        }
+        System.out.println();
+        for(int i = 1; i < currentChoice; i++){
+            System.out.print("\t");
+        }
+        System.out.println("|");
+    }
+
+    private void displayUserStatus(){
+        System.out.println("Your buttons are Left, Right, OK, Back and Quit.");
+        if(currentCustomer != null){
+            System.out.println("Current user: " + currentCustomer.getUsername());
+        }else{
+            System.out.println("You are not logged in.");
+        }
+    }
+
+
+    /**
+     * The Run method is the main method of the program.
+     */
+    /*public void Run() {
         System.out.println("Welcome to the WebShop!");
         while (running) {
             System.out.println(info);
@@ -749,60 +810,25 @@ public class WebShop {
         throw new IllegalArgumentException("Invalid sortBy value: " + sortBy);
     }
 
-    /*
-    private void bubbleSort(String variable, boolean ascending) {
-        if (variable.equals("name")) {
-            int length = products.size();
-            for (int i = 0; i < length - 1; i++) {
-                boolean sorted = true;
-                int length2 = length - i;
-                for (int j = 0; j < length2 - 1; j++) {
-                    if (ascending) {
-                        if (products.get(j).getName().compareTo(products.get(j + 1).getName()) < 0) {
-                            Product temp = products.get(j);
-                            products.set(j, products.get(j + 1));
-                            products.set(j + 1, temp);
-                            sorted = false;
-                        }
-                    } else {
-                        if (products.get(j).getName().compareTo(products.get(j + 1).getName()) > 0) {
-                            Product temp = products.get(j);
-                            products.set(j, products.get(j + 1));
-                            products.set(j + 1, temp);
-                            sorted = false;
-                        }
-                    }
-                }
-                if (sorted == true) {
-                    break;
-                }
-            }
-        } else if (variable.equals("price")) {
-            int length = products.size();
-            for (int i = 0; i < length - 1; i++) {
-                boolean sorted = true;
-                int length2 = length - i;
-                for (int j = 0; j < length2 - 1; j++) {
-                    if (ascending) {
-                        if (products.get(j).getPrice() > products.get(j + 1).getPrice()) {
-                            Product temp = products.get(j);
-                            products.set(j, products.get(j + 1));
-                            products.set(j + 1, temp);
-                            sorted = false;
-                        }
-                    } else {
-                        if (products.get(j).getPrice() < products.get(j + 1).getPrice()) {
-                            Product temp = products.get(j);
-                            products.set(j, products.get(j + 1));
-                            products.set(j + 1, temp);
-                            sorted = false;
-                        }
-                    }
-                }
-                if (sorted == true) {
-                    break;
-                }
-            }
-        }
-    }*/
+    /**
+     * Created a new method to navigate the menu based on the given button.
+     *
+     * This method navigates the menu based on the given button.
+     * @param button the button that was pressed
+     */
+    public void NavigateMenu(Button button) {
+
+    }
+
+    public void purchaseProduct(Product product) {
+    }
+
+    public void sortProducts(String sortType, boolean isAscending) {
+    }
+
+    public void login(String username, String password) {
+    }
+
+    public void register(String username, String password) {
+    }
 }
