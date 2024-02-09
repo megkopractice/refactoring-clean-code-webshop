@@ -1,10 +1,7 @@
 package org.example;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.List;
+import java.util.*;
 
 
 // Refactoring a web shop program with Design Patterns (clean code)
@@ -74,9 +71,18 @@ public class WebShop {
 
     Scanner scanner = new Scanner(System.in);
 
+    //private Map<Button, Command> commands = new HashMap<>();
+
     public WebShop() {
         products = database.getProducts();
         customers = database.getCustomers();
+
+        //Button mainMenuButton = new Button("main menu");
+
+
+        //commands.put("main menu", new NavigateMenuCommand(this, "main menu"));
+        //commands.put("wares menu", new NavigateMenuCommand(this));
+        //commands.put("customer menu", new NavigateMenuCommand(this));
     }
 
     public void displayMenu(){
