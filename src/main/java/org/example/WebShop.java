@@ -71,7 +71,7 @@ public class WebShop {
 
     Scanner scanner = new Scanner(System.in);
 
-    //private Map<Button, Command> commands = new HashMap<>();
+    private Map<Button, Command> commands = new HashMap<>();
 
     public WebShop() {
         products = database.getProducts();
@@ -101,6 +101,15 @@ public class WebShop {
             displayUserStatus();
             String choice = scanner.nextLine().toLowerCase();
             handleChoice(choice);
+        }
+    }
+
+    private void handleChoice(String choice) {
+        Command command = commands.get(choice);
+        if (command != null) {
+            command.execute();
+        } else {
+            System.out.println("Invalid choice. Please try again.");
         }
     }
 
