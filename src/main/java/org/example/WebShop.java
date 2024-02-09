@@ -77,12 +77,49 @@ public class WebShop {
         products = database.getProducts();
         customers = database.getCustomers();
 
-        //Button mainMenuButton = new Button("main menu");
+        // Buttons for the main menu
+        Button mainMenuButton = new Button("main menu");
+        //Button seeWearsButton = new Button("see wares"); // logical error here? redundant because there is wares menu button?
+        //Button customerInfoButton = new Button("customer info"); // logical error here? redundant because there is customer menu button?
 
+        Button waresMenuButton = new Button("wares menu");
+        Button customerMenuButton = new Button("customer menu");
+        Button loginButton = new Button("login");
 
-        //commands.put("main menu", new NavigateMenuCommand(this, "main menu"));
-        //commands.put("wares menu", new NavigateMenuCommand(this));
-        //commands.put("customer menu", new NavigateMenuCommand(this));
+        // Buttons for the wares menu
+        Button seeAllWaresButton = new Button("see all wares");
+        Button purchaseWareButton = new Button("purchase a ware");
+        Button sortWaresButton = new Button("sort wares");
+        Button loginButton2 = new Button("login");
+        Button backButton = new Button("back");
+
+        // Buttons for the customer menu
+        Button seeOrdersButton = new Button("see your orders");
+        Button setInfoButton = new Button("set your info");
+        Button addFundsButton = new Button("add funds");
+        Button loginButton3 = new Button("login");
+        Button backButton2 = new Button("back");
+
+        // Buttons for the login menu
+        Button setUsernameButton = new Button("set username");
+        Button setPasswordButton = new Button("set password");
+        Button loginButton4 = new Button("login");
+        Button registerButton = new Button("register");
+        Button backButton3 = new Button("back");
+
+        // Buttons for the sort wares menu (wares menu -> sort wares
+        Button sortByNameDescendingButton = new Button("sort by name, descending");
+        Button sortByNameAscendingButton = new Button("sort by name, ascending");
+        Button sortByPriceDescendingButton = new Button("sort by price, descending");
+        Button sortByPriceAscendingButton = new Button("sort by price, ascending");
+        Button loginButton5 = new Button("login");
+        Button backButton4 = new Button("back");
+
+        commands.put(mainMenuButton, new NavigateMenuCommand(this, mainMenuButton));
+        commands.put(waresMenuButton, new NavigateMenuCommand(this, waresMenuButton));
+        commands.put(customerMenuButton, new NavigateMenuCommand(this, customerMenuButton));
+        commands.put(loginButton, new NavigateMenuCommand(this, loginButton));
+
     }
 
     public void displayMenu(){
