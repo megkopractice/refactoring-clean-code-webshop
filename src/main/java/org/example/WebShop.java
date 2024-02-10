@@ -49,7 +49,6 @@ import java.util.*;
  * The WebShop class is the main class of the program.
  */
 
-
 public class WebShop {
     boolean running = true;
     Database database = new Database();
@@ -76,6 +75,12 @@ public class WebShop {
     public WebShop() {
         products = database.getProducts();
         customers = database.getCustomers();
+
+        // Buttons for Left, Right, OK, (Back), Quit
+        Button leftButton = new Button("left");
+        Button rightButton = new Button("right");
+        Button okButton = new Button("ok");
+        Button quitButton = new Button("quit");
 
         // Buttons for the main menu
         Button mainMenuButton = new Button("main menu");
@@ -115,13 +120,51 @@ public class WebShop {
         Button loginButton5 = new Button("login");
         Button backButton4 = new Button("back");
 
+        commands.put(leftButton, new NavigateMenuCommand(this, leftButton));
+        commands.put(rightButton, new NavigateMenuCommand(this, rightButton));
+        commands.put(okButton, new NavigateMenuCommand(this, okButton));
+        commands.put(quitButton, new NavigateMenuCommand(this, quitButton));
+
         commands.put(mainMenuButton, new NavigateMenuCommand(this, mainMenuButton));
+
         commands.put(waresMenuButton, new NavigateMenuCommand(this, waresMenuButton));
         commands.put(customerMenuButton, new NavigateMenuCommand(this, customerMenuButton));
         commands.put(loginButton, new NavigateMenuCommand(this, loginButton));
 
+        commands.put(seeAllWaresButton, new NavigateMenuCommand(this, seeAllWaresButton));
+        commands.put(purchaseWareButton, new NavigateMenuCommand(this, purchaseWareButton));
+        commands.put(sortWaresButton, new NavigateMenuCommand(this, sortWaresButton));
+        commands.put(loginButton2, new NavigateMenuCommand(this, loginButton2));
+        commands.put(backButton, new NavigateMenuCommand(this, backButton));
+
+        commands.put(seeOrdersButton, new NavigateMenuCommand(this, seeOrdersButton));
+        commands.put(setInfoButton, new NavigateMenuCommand(this, setInfoButton));
+        commands.put(addFundsButton, new NavigateMenuCommand(this, addFundsButton));
+        commands.put(loginButton3, new NavigateMenuCommand(this, loginButton3));
+        commands.put(backButton2, new NavigateMenuCommand(this, backButton2));
+
+        commands.put(setUsernameButton, new NavigateMenuCommand(this, setUsernameButton));
+        commands.put(setPasswordButton, new NavigateMenuCommand(this, setPasswordButton));
+        commands.put(loginButton4, new NavigateMenuCommand(this, loginButton4));
+        commands.put(registerButton, new NavigateMenuCommand(this, registerButton));
+        commands.put(backButton3, new NavigateMenuCommand(this, backButton3));
+
+        commands.put(sortByNameDescendingButton, new NavigateMenuCommand(this, sortByNameDescendingButton));
+        commands.put(sortByNameAscendingButton, new NavigateMenuCommand(this, sortByNameAscendingButton));
+        commands.put(sortByPriceDescendingButton, new NavigateMenuCommand(this, sortByPriceDescendingButton));
+        commands.put(sortByPriceAscendingButton, new NavigateMenuCommand(this, sortByPriceAscendingButton));
+        commands.put(loginButton5, new NavigateMenuCommand(this, loginButton5));
+        commands.put(backButton4, new NavigateMenuCommand(this, backButton4));
+
     }
 
+    /**
+     * The displayMenu method displays the menu and handles the user's input.
+     * It is the main method of the program.
+     * It is refactored from the Run method.
+     * It is refactored to use the Command pattern.
+     */
+    // Refactored the Run method to displayMenu method
     public void displayMenu(){
         System.out.println("Welcome to the WebShop!");
 
@@ -141,6 +184,7 @@ public class WebShop {
         }
     }
 
+    // Refactored the Run method to handleChoice method
     private void handleChoice(String choice) {
         Command command = commands.get(choice);
         if (command != null) {
@@ -150,6 +194,7 @@ public class WebShop {
         }
     }
 
+    // Refactored the Run method to displayMainMenu method
     private void displayMainMenu(){
         System.out.println("1: " + option1);
         System.out.println("2: " + option2);
@@ -159,6 +204,7 @@ public class WebShop {
         }
     }
 
+    // Refactored the Run method to displayPurchaseMenu method
     private void displayPurchaseMenu(){
         for(int i = 0; i < amountOfOptions; i++){
             System.out.println(i + 1 + ": " + products.get(i).getName() + ", " + products.get(i).getPrice() + "kr");
@@ -166,6 +212,7 @@ public class WebShop {
         System.out.println("Your funds: " + currentCustomer.getFunds());
     }
 
+    // Refactored the Run method to displayOptions method
     private void displayOptions(){
         for(int i = 0; i < amountOfOptions; i++){
             System.out.print(i + 1 + "\t");
@@ -177,15 +224,15 @@ public class WebShop {
         System.out.println("|");
     }
 
+    // Refactored the Run method to displayUserStatus method
     private void displayUserStatus(){
-        System.out.println("Your buttons are Left, Right, OK, Back and Quit.");
+        System.out.println("Your buttons are Left, Right, OK, Back and Quit."); // ?
         if(currentCustomer != null){
             System.out.println("Current user: " + currentCustomer.getUsername());
         }else{
             System.out.println("You are not logged in.");
         }
     }
-
 
     /**
      * The Run method is the main method of the program.
@@ -868,7 +915,8 @@ public class WebShop {
      * This method navigates the menu based on the given button.
      * @param button the button that was pressed
      */
-    public void NavigateMenu(Button button) {
+    public void navigateMenu(Button button) {
+
 
     }
 

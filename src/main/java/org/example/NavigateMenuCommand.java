@@ -12,6 +12,6 @@ public class NavigateMenuCommand implements Command{
 
     @Override
     public void execute() {
-        webShop.NavigateMenu(button);
+        webShop.navigateMenu(button);
     }
 }
