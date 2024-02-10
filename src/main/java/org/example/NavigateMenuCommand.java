@@ -4,14 +4,13 @@ public class NavigateMenuCommand implements Command{
     private WebShop webShop;
     private Button button;
 
-    public NavigateMenuCommand(WebShop webShop, Button button)
+    public NavigateMenuCommand(WebShop webShop)
     {
         this.webShop = webShop;
-        this.button = button;
     }
 
     @Override
     public void execute() {
-        webShop.navigateMenu(button);
+        webShop.displayMenu();
     }
 }
