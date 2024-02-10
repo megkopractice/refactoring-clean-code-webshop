@@ -5,6 +5,7 @@ package org.example;
  */
 public class NavigateMenuCommand implements Command{
     private WebShop webShop;
+    private Button button;
 
     public NavigateMenuCommand(WebShop webShop)
     {

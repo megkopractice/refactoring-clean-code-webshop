@@ -120,41 +120,41 @@ public class WebShop {
         Button loginButton5 = new Button("login");
         Button backButton4 = new Button("back");
 
-        commands.put(leftButton, new NavigateMenuCommand(this, leftButton));
-        commands.put(rightButton, new NavigateMenuCommand(this, rightButton));
-        commands.put(okButton, new NavigateMenuCommand(this, okButton));
-        commands.put(quitButton, new NavigateMenuCommand(this, quitButton));
+        commands.put(leftButton, new NavigateMenuCommand(this));
+        commands.put(rightButton, new NavigateMenuCommand(this));
+        commands.put(okButton, new NavigateMenuCommand(this));
+        commands.put(quitButton, new NavigateMenuCommand(this));
 
-        commands.put(mainMenuButton, new NavigateMenuCommand(this, mainMenuButton));
+        commands.put(mainMenuButton, new NavigateMenuCommand(this));
 
-        commands.put(waresMenuButton, new NavigateMenuCommand(this, waresMenuButton));
-        commands.put(customerMenuButton, new NavigateMenuCommand(this, customerMenuButton));
-        commands.put(loginButton, new NavigateMenuCommand(this, loginButton));
+        commands.put(waresMenuButton, new NavigateMenuCommand(this));
+        commands.put(customerMenuButton, new NavigateMenuCommand(this));
+        commands.put(loginButton, new NavigateMenuCommand(this));
 
-        commands.put(seeAllWaresButton, new NavigateMenuCommand(this, seeAllWaresButton));
-        commands.put(purchaseWareButton, new NavigateMenuCommand(this, purchaseWareButton));
-        commands.put(sortWaresButton, new NavigateMenuCommand(this, sortWaresButton));
-        commands.put(loginButton2, new NavigateMenuCommand(this, loginButton2));
-        commands.put(backButton, new NavigateMenuCommand(this, backButton));
+        commands.put(seeAllWaresButton, new NavigateMenuCommand(this));
+        commands.put(purchaseWareButton, new NavigateMenuCommand(this));
+        commands.put(sortWaresButton, new NavigateMenuCommand(this));
+        commands.put(loginButton2, new NavigateMenuCommand(this));
+        commands.put(backButton, new NavigateMenuCommand(this));
 
-        commands.put(seeOrdersButton, new NavigateMenuCommand(this, seeOrdersButton));
-        commands.put(setInfoButton, new NavigateMenuCommand(this, setInfoButton));
-        commands.put(addFundsButton, new NavigateMenuCommand(this, addFundsButton));
-        commands.put(loginButton3, new NavigateMenuCommand(this, loginButton3));
-        commands.put(backButton2, new NavigateMenuCommand(this, backButton2));
+        commands.put(seeOrdersButton, new NavigateMenuCommand(this));
+        commands.put(setInfoButton, new NavigateMenuCommand(this));
+        commands.put(addFundsButton, new NavigateMenuCommand(this));
+        commands.put(loginButton3, new NavigateMenuCommand(this));
+        commands.put(backButton2, new NavigateMenuCommand(this));
 
-        commands.put(setUsernameButton, new NavigateMenuCommand(this, setUsernameButton));
-        commands.put(setPasswordButton, new NavigateMenuCommand(this, setPasswordButton));
-        commands.put(loginButton4, new NavigateMenuCommand(this, loginButton4));
-        commands.put(registerButton, new NavigateMenuCommand(this, registerButton));
-        commands.put(backButton3, new NavigateMenuCommand(this, backButton3));
+        commands.put(setUsernameButton, new NavigateMenuCommand(this));
+        commands.put(setPasswordButton, new NavigateMenuCommand(this));
+        commands.put(loginButton4, new NavigateMenuCommand(this));
+        commands.put(registerButton, new NavigateMenuCommand(this));
+        commands.put(backButton3, new NavigateMenuCommand(this));
 
-        commands.put(sortByNameDescendingButton, new NavigateMenuCommand(this, sortByNameDescendingButton));
-        commands.put(sortByNameAscendingButton, new NavigateMenuCommand(this, sortByNameAscendingButton));
-        commands.put(sortByPriceDescendingButton, new NavigateMenuCommand(this, sortByPriceDescendingButton));
-        commands.put(sortByPriceAscendingButton, new NavigateMenuCommand(this, sortByPriceAscendingButton));
-        commands.put(loginButton5, new NavigateMenuCommand(this, loginButton5));
-        commands.put(backButton4, new NavigateMenuCommand(this, backButton4));
+        commands.put(sortByNameDescendingButton, new NavigateMenuCommand(this));
+        commands.put(sortByNameAscendingButton, new NavigateMenuCommand(this));
+        commands.put(sortByPriceDescendingButton, new NavigateMenuCommand(this));
+        commands.put(sortByPriceAscendingButton, new NavigateMenuCommand(this));
+        commands.put(loginButton5, new NavigateMenuCommand(this));
+        commands.put(backButton4, new NavigateMenuCommand(this));
 
     }
 
