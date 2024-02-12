@@ -852,7 +852,7 @@ public class WebShop {
      * @param isAscending true if the products should be sorted in ascending order, false if they should be sorted in descending order
      */
 
-    private void mergeSort(String sortBy, boolean isAscending) {
+    public void mergeSort(String sortBy, boolean isAscending) {
         products = mergeSortHelper(products, sortBy, isAscending);
     }
 

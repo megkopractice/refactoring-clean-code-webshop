@@ -1,7 +1,7 @@
 package org.example;
 /**
  * CommandHandler class
- * This class gathers all the commands and invokes them in the main method
+ * This class gathers all sorts of the commands and invokes them in the Main class
  * This class is part of the Command Pattern
  *
  */

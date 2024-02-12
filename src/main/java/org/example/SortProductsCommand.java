@@ -13,6 +13,6 @@ public class SortProductsCommand  implements Command{
 
     @Override
     public void execute() {
-        webShop.sortProducts(sortBy, isAscending);
+        webShop.mergeSort(sortBy, isAscending);
     }
 }
