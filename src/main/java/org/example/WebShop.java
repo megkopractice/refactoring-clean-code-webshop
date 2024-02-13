@@ -3,50 +3,19 @@ package org.example;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
-// Refactoring a web shop program with Design Patterns (clean code)
-
-// Design Patterns used in this program:
-// 1. Builder Pattern on Customer class (and Order class) ☆ OK
-// 2. Proxy Pattern on Database class (and Customer class)　☆ OK
-// 3. Iterator Pattern on Customer class (and Order class)
-// 4. Adapter Pattern on Customer class (and Order class)
-// 5. Decorator Pattern on Product class (and Order class)
-// 11. State Pattern on WebShop class　　　☆
-// 12. Command Pattern on WebShop class　　☆
-
-// Other details of refactoring:
-// 1. Changed the name of the class from Main to WebShop. ☆
-// 2. Changed the name of the class from Product to Ware. ☆
-// 3. Changed the name of the class from Order to Purchase. ☆
-// 4. Changed the name of the class from Database to DatabaseProxy. ☆
-// 5. Changed the name of the class from Customer to CustomerBuilder. ☆
-// 6. Changed the name of the class from WebShop to WebShopState. ☆
-// 7. Changed the name of the class from WebShop to WebShopCommand. ☆
-// 8. Changed the name of the class from WebShop to WebShopIterator. ☆
-// 9. Changed the name of the class from WebShop to WebShopAdapter. ☆
-// 10. Changed the name of the class from WebShop to WebShopDecorator. ☆
-// 11. Changed the name of the class from WebShop to WebShopStrategy. ☆
-// 12. Changed the name of the class from WebShop to WebShopObserver. ☆
-// 13. Changed the name of the class from WebShop to WebShopTemplate. ☆
-// 14. Changed the name of the class from WebShop to WebShopVisitor. ☆
-// 15. Changed the name of the class from WebShop to WebShopMediator. ☆
-// 16. Changed the name of the class from WebShop to WebShopMemento. ☆
-// 17. Changed the name of the class from WebShop to WebShopFlyweight. ☆
-// 18. Changed the name of the class from WebShop to WebShopFacade. ☆
-// 19. Changed the name of the class from WebShop to WebShopBridge. ☆
-// 20. Changed the name of the class from WebShop to WebShopComposite. ☆
-// 21. Changed the name of the class from WebShop to WebShopChainOfResponsibility. ☆
-// 22. Changed the name of the class from WebShop to WebShopInterpreter. ☆
-// Design patterns that work as alternatives to Switch statements or else-if statements depending on the menu you are at (Command or State):
-// (No Switch statements or else-if statements are allowed in this program.)
-
-// Where Bubble sort is applied, which is a bad sorting algorithm, OK
-
-
-
 /**
  * The WebShop class is the main class of the program.
+ * Refactoring a web shop program with Design Patterns (clean code)
+ * *
+ * Design Patterns and Algorithms used in this program are as follows:
+ * 1. Builder Pattern on Customer class ☆ OK
+ * (Customer object is created in the Database class using Builder pattern)
+ * 2. Proxy Pattern on DatabaseProxy class　☆ OK
+ * 3. Command Pattern on WebShop class (No Switch statements or else-if statements). ☆ OK
+ *    - Command interface, -CommandHandler class
+ *    - Command classes: NavigateMenuCommand, PurchaseProductCommand, RegisterCommand, LoginCommand, LogoutCommand, SortWaresCommand　
+ * 4. Merge Sort algorithm on mergeSort method in WebShop class ☆ OK
+ * @author Megumi Kogo
  */
 
 public class WebShop {
@@ -165,15 +134,15 @@ public class WebShop {
      * It is refactored to use the Command pattern.
      */
     // Refactored the Run method to displayMenu method
-    public void displayMenu(){
+    public void displayMenu() {
         System.out.println("Welcome to the WebShop!");
 
-        while(running){
+        while (running) {
             System.out.println(info);
 
-            if(currentMenu.equals("purchase menu")){
+            if(currentMenu.equals("purchase menu")) {
                 displayPurchaseMenu();
-            }else{
+            } else {
                 displayMainMenu();
             }
 
@@ -187,7 +156,7 @@ public class WebShop {
     // Refactored the Run method to handleChoice method
     private void handleChoice(String choice) {
         Command command = commands.get(choice);
-        if (command != null) {
+        if(command != null) {
             command.execute();
         } else {
             System.out.println("Invalid choice. Please try again.");
@@ -195,44 +164,225 @@ public class WebShop {
     }
 
     // Refactored the Run method to displayMainMenu method
-    private void displayMainMenu(){
+    private void displayMainMenu() {
         System.out.println("1: " + option1);
         System.out.println("2: " + option2);
         System.out.println("3: " + option3);
-        if(amountOfOptions > 3){
+        if(amountOfOptions > 3) {
             System.out.println("4: " + option4);
         }
     }
 
     // Refactored the Run method to displayPurchaseMenu method
-    private void displayPurchaseMenu(){
-        for(int i = 0; i < amountOfOptions; i++){
+    private void displayPurchaseMenu() {
+        for (int i = 0; i < amountOfOptions; i++) {
             System.out.println(i + 1 + ": " + products.get(i).getName() + ", " + products.get(i).getPrice() + "kr");
         }
         System.out.println("Your funds: " + currentCustomer.getFunds());
     }
 
     // Refactored the Run method to displayOptions method
-    private void displayOptions(){
-        for(int i = 0; i < amountOfOptions; i++){
+    private void displayOptions() {
+        for (int i = 0; i < amountOfOptions; i++) {
             System.out.print(i + 1 + "\t");
         }
         System.out.println();
-        for(int i = 1; i < currentChoice; i++){
+        for (int i = 1; i < currentChoice; i++) {
             System.out.print("\t");
         }
         System.out.println("|");
     }
 
     // Refactored the Run method to displayUserStatus method
-    private void displayUserStatus(){
+    private void displayUserStatus() {
         System.out.println("Your buttons are Left, Right, OK, Back and Quit."); // ?
-        if(currentCustomer != null){
+        if(currentCustomer != null) {
             System.out.println("Current user: " + currentCustomer.getUsername());
-        }else{
+        } else {
             System.out.println("You are not logged in.");
         }
     }
+
+    /**
+     * The purchaseProduct method purchases a product.
+     * It is refactored from the Run method.
+     */
+    public void purchaseProduct() {
+        if(currentMenu.equals("purchase menu")) {
+            int index = currentChoice - 1;
+            Product product = products.get(index);
+            if(product.InStock()) {
+                if(currentCustomer.CanAfford(product.getPrice())) {
+                    currentCustomer.removeFunds(product.getPrice());
+                    product.decreaseStock();
+                    currentCustomer.getOrders().add(new Order(product.getName(), product.getPrice(), LocalDateTime.now()));
+                    System.out.println();
+                    System.out.println("Successfully bought " + product.getName());
+                    System.out.println();
+                } else {
+                    System.out.println();
+                    System.out.println("You cannot afford.");
+                    System.out.println();
+                }
+            } else {
+                System.out.println();
+                System.out.println("Not in stock.");
+                System.out.println();
+            }
+        }
+    }
+
+    /**
+     * The register method registers a new customer.
+     * Newly added method, using the Builder pattern.
+     */
+    public void register(String username, String password, String firstName, String lastName, String email, int age, String address, String phoneNumber) {
+        // Check if the username is already taken
+        System.out.println("Please write your username.");
+        String newUsername = scanner.nextLine();
+
+        if(isUsernameTaken(newUsername)) {
+            System.out.println("Username already taken. Please choose another one.");
+            return;
+        }
+
+        // Create a new customer using the Builder pattern
+        Customer newCustomer = new Customer.Builder(username)
+                .password(password)
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .age(age)
+                .address(address)
+                .phoneNumber(phoneNumber)
+                .build();
+
+        // Add the new customer to the list of customers
+        customers.add(newCustomer);
+
+        System.out.println("Registration successful!");
+    }
+
+    // Helper method to check if a username is already taken
+    private boolean isUsernameTaken(String username) {
+        for (Customer customer : customers) {
+            if(customer.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * The login method logs in a customer.
+     * Newly added method, using the Builder pattern.
+     */
+
+    public void login(String username, String password) {
+        System.out.println("Please type in your username.");
+        String usernameInput = scanner.nextLine();
+        System.out.println("Please type in your password.");
+        String passwordInput = scanner.nextLine();
+        Customer foundCustomer = findCustomerByUsername(usernameInput);
+
+        // Check if the username exists
+        if(foundCustomer == null) {
+            System.out.println("Username not found. Please register if you are a new user.");
+            return;
+        }
+        // Check if the password matches
+        if(!foundCustomer.CheckPassword(password)) {
+            System.out.println("Incorrect password. Please try again.");
+            return;
+        }
+
+        // Set the current customer to the one who logged in
+        currentCustomer = foundCustomer;
+        System.out.println("Login successful! Welcome, " + currentCustomer.getFirstName() + "!");
+    }
+
+    // Helper method to find a customer by username
+    private Customer findCustomerByUsername(String username) {
+        for (Customer customer : customers) {
+            if(customer.getUsername().equals(username)) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    // Method to log out the current customer
+    public void logout() {
+        currentCustomer = null;
+        System.out.println("Logout successful!");
+    }
+
+    /**
+     * Refactored the bubbleSort method to use the mergeSort algorithm instead.
+     * Sorts the products by the given variable in ascending or descending order.
+     *
+     * @param sortBy      the variable to sort by
+     * @param isAscending true if the products should be sorted in ascending order, false if they should be sorted in descending order
+     */
+
+    public void mergeSort(String sortBy, boolean isAscending) {
+        products = mergeSortHelper(products, sortBy, isAscending);
+    }
+
+    private ArrayList<Product> mergeSortHelper(ArrayList<Product> productList, String sortBy, boolean isAscending) {
+        int size = productList.size();
+
+        if(size <= 1) {
+            return productList; // Already sorted
+        }
+
+        // Split the list into two halves
+        int mid = size / 2;
+        ArrayList<Product> left = new ArrayList<>(productList.subList(0, mid));
+        ArrayList<Product> right = new ArrayList<>(productList.subList(mid, size));
+
+        // Recursively sort the two halves
+        left = mergeSortHelper(left, sortBy, isAscending);
+        right = mergeSortHelper(right, sortBy, isAscending);
+
+        // Merge the sorted halves
+        return merge(left, right, sortBy, isAscending);
+    }
+
+    private ArrayList<Product> merge(ArrayList<Product> left, ArrayList<Product> right, String sortBy, boolean isAscending) {
+        ArrayList<Product> mergedList = new ArrayList<>();
+        int leftIndex = 0;
+        int rightIndex = 0;
+
+        while (leftIndex < left.size() && rightIndex < right.size()) {
+            if(compareProducts(left.get(leftIndex), right.get(rightIndex), sortBy, isAscending) < 0) {
+                mergedList.add(left.get(leftIndex++));
+            } else {
+                mergedList.add(right.get(rightIndex++));
+            }
+        }
+
+        // Add remaining elements from left and right
+        mergedList.addAll(left.subList(leftIndex, left.size()));
+        mergedList.addAll(right.subList(rightIndex, right.size()));
+
+        return mergedList;
+    }
+
+    private int compareProducts(Product product1, Product product2, String sortBy, boolean isAscending) {
+        if(sortBy.equals("name")) {
+            return isAscending ? product1.getName().compareTo(product2.getName()) :
+                    product2.getName().compareTo(product1.getName());
+        } else if(sortBy.equals("price")) {
+            return isAscending ? Double.compare(product1.getPrice(), product2.getPrice()) :
+                    Double.compare(product2.getPrice(), product1.getPrice());
+        }
+
+        // Handle the case where sortBy is neither "name" nor "price"
+        throw new IllegalArgumentException("Invalid sortBy value: " + sortBy);
+    }
+
+}
 
     /**
      * The Run method is the main method of the program.
@@ -843,92 +993,6 @@ public class WebShop {
                     break;
             }
         }
-    }
+    } // End of Run method
 
-    /**
-     * Refactored the bubbleSort method to use the mergeSort algorithm instead.
-     * Sorts the products by the given variable in ascending or descending order.
-     * @param sortBy the variable to sort by
-     * @param isAscending true if the products should be sorted in ascending order, false if they should be sorted in descending order
-     */
-
-    public void mergeSort(String sortBy, boolean isAscending) {
-        products = mergeSortHelper(products, sortBy, isAscending);
-    }
-
-    private ArrayList<Product> mergeSortHelper(ArrayList<Product> productList, String sortBy, boolean isAscending) {
-        int size = productList.size();
-
-        if (size <= 1) {
-            return productList; // Already sorted
-        }
-
-        // Split the list into two halves
-        int mid = size / 2;
-        ArrayList<Product> left = new ArrayList<>(productList.subList(0, mid));
-        ArrayList<Product> right = new ArrayList<>(productList.subList(mid, size));
-
-        // Recursively sort the two halves
-        left = mergeSortHelper(left, sortBy, isAscending);
-        right = mergeSortHelper(right, sortBy, isAscending);
-
-        // Merge the sorted halves
-        return merge(left, right, sortBy, isAscending);
-    }
-
-    private ArrayList<Product> merge(ArrayList<Product> left, ArrayList<Product> right, String sortBy, boolean isAscending) {
-        ArrayList<Product> mergedList = new ArrayList<>();
-        int leftIndex = 0;
-        int rightIndex = 0;
-
-        while (leftIndex < left.size() && rightIndex < right.size()) {
-            if (compareProducts(left.get(leftIndex), right.get(rightIndex), sortBy, isAscending) < 0) {
-                mergedList.add(left.get(leftIndex++));
-            } else {
-                mergedList.add(right.get(rightIndex++));
-            }
-        }
-
-        // Add remaining elements from left and right
-        mergedList.addAll(left.subList(leftIndex, left.size()));
-        mergedList.addAll(right.subList(rightIndex, right.size()));
-
-        return mergedList;
-    }
-
-    private int compareProducts(Product product1, Product product2, String sortBy, boolean isAscending) {
-        if (sortBy.equals("name")) {
-            return isAscending ? product1.getName().compareTo(product2.getName()) :
-                    product2.getName().compareTo(product1.getName());
-        } else if (sortBy.equals("price")) {
-            return isAscending ? Double.compare(product1.getPrice(), product2.getPrice()) :
-                    Double.compare(product2.getPrice(), product1.getPrice());
-        }
-
-        // Handle the case where sortBy is neither "name" nor "price"
-        throw new IllegalArgumentException("Invalid sortBy value: " + sortBy);
-    }
-
-    /**
-     * Created a new method to navigate the menu based on the given button.
-     *
-     * This method navigates the menu based on the given button.
-     * @param button the button that was pressed
-     */
-    public void navigateMenu(Button button) {
-
-
-    }
-
-    public void purchaseProduct(Product product) {
-    }
-
-    public void sortProducts(String sortType, boolean isAscending) {
-    }
-
-    public void login(String username, String password) {
-    }
-
-    public void register(String username, String password) {
-    }
-}
+}*/

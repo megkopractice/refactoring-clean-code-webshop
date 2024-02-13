@@ -3,6 +3,14 @@ package org.example;
 public class Main {
     public static void main(String[] args) {
         WebShop webShop = new WebShop();
-        webShop.displayMenu();
+
+        CommandHandler navigateMenuHandler = new CommandHandler();
+        CommandHandler purchaseProductHandler = new CommandHandler();
+        CommandHandler sortProductHandler = new CommandHandler();
+        CommandHandler loginHandler = new CommandHandler();
+        CommandHandler registerHandler = new CommandHandler();
+
+        navigateMenuHandler.invoke(new NavigateMenuCommand(webShop));
+
     }
 }
