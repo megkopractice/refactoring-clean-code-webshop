@@ -53,8 +53,8 @@ public class WebShop {
 
         // Buttons for the main menu
         Button mainMenuButton = new Button("main menu");
-        //Button seeWearsButton = new Button("see wares"); // logical error here? redundant because there is wares menu button?
-        //Button customerInfoButton = new Button("customer info"); // logical error here? redundant because there is customer menu button?
+        Button seeWearsButton = new Button("see wares");
+        Button customerInfoButton = new Button("customer info");
 
         Button waresMenuButton = new Button("wares menu");
         Button customerMenuButton = new Button("customer menu");
@@ -95,15 +95,17 @@ public class WebShop {
         commands.put(quitButton, new NavigateMenuCommand(this));
 
         commands.put(mainMenuButton, new NavigateMenuCommand(this));
+        commands.put(seeWearsButton, new NavigateMenuCommand(this));
+        commands.put(customerInfoButton, new NavigateMenuCommand(this));
 
         commands.put(waresMenuButton, new NavigateMenuCommand(this));
         commands.put(customerMenuButton, new NavigateMenuCommand(this));
         commands.put(loginButton, new NavigateMenuCommand(this));
 
         commands.put(seeAllWaresButton, new NavigateMenuCommand(this));
-        commands.put(purchaseWareButton, new NavigateMenuCommand(this));
-        commands.put(sortWaresButton, new NavigateMenuCommand(this));
-        commands.put(loginButton2, new NavigateMenuCommand(this));
+        commands.put(purchaseWareButton, new PurchaseProductCommand(this)); // >>
+        commands.put(sortWaresButton, new NavigateMenuCommand(this)); // >>
+        commands.put(loginButton2, new LoginCommand(this, username, password)); // ???
         commands.put(backButton, new NavigateMenuCommand(this));
 
         commands.put(seeOrdersButton, new NavigateMenuCommand(this));
@@ -147,6 +149,7 @@ public class WebShop {
             }
 
             displayOptions();
+            displayButtonInstructions();
             displayUserStatus();
             String choice = scanner.nextLine().toLowerCase();
             handleChoice(choice);
@@ -155,8 +158,16 @@ public class WebShop {
 
     // Refactored the Run method to handleChoice method
     private void handleChoice(String choice) {
-        Command command = commands.get(choice);
-        if(command != null) {
+        Button selectedButton = null;
+        for (Button button : commands.keySet()) {
+            if (button.getName().equalsIgnoreCase(choice)) {
+                selectedButton = button;
+                break;
+            }
+        }
+
+        if (selectedButton != null) {
+            Command command = commands.get(selectedButton);
             command.execute();
         } else {
             System.out.println("Invalid choice. Please try again.");
@@ -193,10 +204,14 @@ public class WebShop {
         System.out.println("|");
     }
 
+    // Refactored the Run method to displayButtonInstructions method
+    private void displayButtonInstructions() {
+        System.out.println("Your buttons are Left, Right, OK, Back and Quit.");
+    }
+
     // Refactored the Run method to displayUserStatus method
     private void displayUserStatus() {
-        System.out.println("Your buttons are Left, Right, OK, Back and Quit."); // ?
-        if(currentCustomer != null) {
+        if (currentCustomer != null) {
             System.out.println("Current user: " + currentCustomer.getUsername());
         } else {
             System.out.println("You are not logged in.");
