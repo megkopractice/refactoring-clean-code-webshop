@@ -26,6 +26,11 @@ public class RegisterCommand implements Command{
 
     @Override
     public void execute() {
+
+    }
+
+    @Override
+    public void execute(String choice) {
         webShop.register(username, password, firstName, lastName, email, age, address, phoneNumber);
     }
 }

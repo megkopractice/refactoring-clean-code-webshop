@@ -40,6 +40,7 @@ public class WebShop {
     Scanner scanner = new Scanner(System.in);
 
     private Map<Button, Command> commands = new HashMap<>();
+    private List<Runnable> purchaseActions;
 
     public WebShop() {
         products = database.getProducts();
@@ -47,25 +48,42 @@ public class WebShop {
 
         // Buttons for Left, Right, OK, (Back), Quit
         Button leftButton = new Button("left");
+        commands.put(leftButton, new NavigateMenuCommand(this));
         Button rightButton = new Button("right");
+        commands.put(rightButton, new NavigateMenuCommand(this));
         Button okButton = new Button("ok");
+        commands.put(okButton, new NavigateMenuCommand(this));
+        Button backButton = new Button("back");
+        commands.put(backButton, new NavigateMenuCommand(this));
         Button quitButton = new Button("quit");
+        commands.put(quitButton, new NavigateMenuCommand(this));
 
         // Buttons for the main menu
         Button mainMenuButton = new Button("main menu");
+        commands.put(mainMenuButton, new NavigateMenuCommand(this));
         Button seeWearsButton = new Button("see wares");
+        commands.put(seeWearsButton, new NavigateMenuCommand(this));
         Button customerInfoButton = new Button("customer info");
+        commands.put(customerInfoButton, new NavigateMenuCommand(this));
+        Button loginMenuButton = new Button("login");
+        commands.put(loginMenuButton, new NavigateMenuCommand(this));
 
-        Button waresMenuButton = new Button("wares menu");
+
         Button customerMenuButton = new Button("customer menu");
         Button loginButton = new Button("login");
 
         // Buttons for the wares menu
+        Button waresMenuButton = new Button("wares menu");
+        commands.put(waresMenuButton, new PurchaseProductCommand(this));
         Button seeAllWaresButton = new Button("see all wares");
+        commands.put(seeAllWaresButton, new PurchaseProductCommand(this));
         Button purchaseWareButton = new Button("purchase a ware");
+        commands.put(purchaseWareButton, new PurchaseProductCommand(this));
         Button sortWaresButton = new Button("sort wares");
+        commands.put(sortWaresButton, new NavigateMenuCommand(this)); // This should display sort wares
+
         Button loginButton2 = new Button("login");
-        Button backButton = new Button("back");
+
 
         // Buttons for the customer menu
         Button seeOrdersButton = new Button("see your orders");
@@ -89,12 +107,8 @@ public class WebShop {
         Button loginButton5 = new Button("login");
         Button backButton4 = new Button("back");
 
-        commands.put(leftButton, new NavigateMenuCommand(this));
-        commands.put(rightButton, new NavigateMenuCommand(this));
-        commands.put(okButton, new NavigateMenuCommand(this));
-        commands.put(quitButton, new NavigateMenuCommand(this));
 
-        commands.put(mainMenuButton, new NavigateMenuCommand(this));
+
         commands.put(seeWearsButton, new NavigateMenuCommand(this));
         commands.put(customerInfoButton, new NavigateMenuCommand(this));
 
@@ -185,11 +199,29 @@ public class WebShop {
     }
 
     // Refactored the Run method to displayPurchaseMenu method
-    private void displayPurchaseMenu() {
+    public void displayPurchaseMenu() {
         for (int i = 0; i < amountOfOptions; i++) {
             System.out.println(i + 1 + ": " + products.get(i).getName() + ", " + products.get(i).getPrice() + "kr");
         }
         System.out.println("Your funds: " + currentCustomer.getFunds());
+
+        // Display options
+        displayOptions();
+
+        // Process user input
+        String choice = scanner.nextLine().toLowerCase();
+        try {
+            int option = Integer.parseInt(choice);
+            if (option >= 1 && option <= purchaseActions.size()) {
+                purchaseActions.get(option - 1).run(); // Execute the corresponding action
+            } else {
+                System.out.println("Invalid option. Please try again.");
+                displayPurchaseMenu(); // Redisplay the menu
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            displayPurchaseMenu(); // Redisplay the menu
+        }
     }
 
     // Refactored the Run method to displayOptions method
