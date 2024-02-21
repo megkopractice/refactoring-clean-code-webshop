@@ -16,4 +16,9 @@ public class LoginCommand implements Command{
     public void execute() {
         webShop.login(username, password);
     }
+
+    @Override
+    public void execute(String choice) {
+
+    }
 }

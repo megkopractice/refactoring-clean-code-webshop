@@ -15,4 +15,9 @@ public class SortProductsCommand  implements Command{
     public void execute() {
         webShop.mergeSort(sortBy, isAscending);
     }
+
+    @Override
+    public void execute(String choice) {
+
+    }
 }

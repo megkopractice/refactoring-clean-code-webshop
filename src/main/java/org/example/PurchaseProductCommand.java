@@ -16,10 +16,10 @@ public class PurchaseProductCommand implements Command{
 
     @Override
     public void execute(String choice) {
-        if(button.getName().equals("purchase a ware")){
+        if(button.getName().equals("purchase menu")){
             webShop.displayPurchaseMenu();
         }
-        if(button.getName().equals("purchase menu")){
+        if(button.getName().equals("purchase a ware")){
             webShop.purchaseProduct();
         }
     }
