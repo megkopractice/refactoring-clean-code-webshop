@@ -46,13 +46,8 @@ public class WebShop {
         products = database.getProducts();
         customers = database.getCustomers();
 
-        // Buttons for Left, Right, OK, (Back), Quit
-        Button leftButton = new Button("left");
-        commands.put(leftButton, new NavigateMenuCommand(this));
-        Button rightButton = new Button("right");
-        commands.put(rightButton, new NavigateMenuCommand(this));
-        Button okButton = new Button("ok");
-        commands.put(okButton, new NavigateMenuCommand(this));
+        // Buttons  Back, Quit
+
         Button backButton = new Button("back");
         commands.put(backButton, new NavigateMenuCommand(this));
         Button quitButton = new Button("quit");
@@ -149,6 +144,43 @@ public class WebShop {
      * It is refactored from the Run method.
      * It is refactored to use the Command pattern.
      */
+    public void displayMenu() {
+        System.out.println("Welcome to the WebShop!");
+        while (running) {
+            System.out.println(info);
+
+            if(currentMenu.equals("purchase menu")) {
+                displayPurchaseMenu();
+            } else {
+                displayMainMenu();
+            }
+
+            displayButtonInstructions();
+            displayUserStatus();
+            String choice = scanner.nextLine().trim().toLowerCase();
+            handleOption(choice);
+        }
+    }
+
+    private void handleOption(String choice) {
+        Button selectedButton = null;
+        for (Button button : commands.keySet()) {
+            if (button.getName().equalsIgnoreCase(choice)) {
+                selectedButton = button;
+                break;
+            }
+        }
+
+        if (selectedButton != null) {
+            Command command = commands.get(selectedButton);
+            command.execute();
+        } else {
+            System.out.println("Invalid option. Choose from the available options.");
+        }
+    }
+
+
+    /*
     // Refactored the Run method to displayMenu method
     public void displayMenu() {
         System.out.println("Welcome to the WebShop!");
@@ -168,25 +200,8 @@ public class WebShop {
             String choice = scanner.nextLine().toLowerCase();
             handleChoice(choice);
         }
-    }
+    }*/
 
-    // Refactored the Run method to handleChoice method
-    private void handleChoice(String choice) {
-        Button selectedButton = null;
-        for (Button button : commands.keySet()) {
-            if (button.getName().equalsIgnoreCase(choice)) {
-                selectedButton = button;
-                break;
-            }
-        }
-
-        if (selectedButton != null) {
-            Command command = commands.get(selectedButton);
-            command.execute();
-        } else {
-            System.out.println("Invalid choice. Please try again.");
-        }
-    }
 
     // Refactored the Run method to displayMainMenu method
     private void displayMainMenu() {
@@ -206,7 +221,7 @@ public class WebShop {
         System.out.println("Your funds: " + currentCustomer.getFunds());
 
         // Display options
-        displayOptions();
+        //displayOptions();
 
         // Process user input
         String choice = scanner.nextLine().toLowerCase();
@@ -224,6 +239,7 @@ public class WebShop {
         }
     }
 
+    /*
     // Refactored the Run method to displayOptions method
     private void displayOptions() {
         for (int i = 0; i < amountOfOptions; i++) {
@@ -234,11 +250,11 @@ public class WebShop {
             System.out.print("\t");
         }
         System.out.println("|");
-    }
+    }*/
 
     // Refactored the Run method to displayButtonInstructions method
     private void displayButtonInstructions() {
-        System.out.println("Your buttons are Left, Right, OK, Back and Quit.");
+        System.out.println("Your buttons are : [Option Name] | Back | Quit");
     }
 
     // Refactored the Run method to displayUserStatus method
