@@ -188,7 +188,7 @@ public class Customer {
         return password.equals(this.password);
     }
 
-    public void PrintInfo()
+    public void PrintCustomerInfo() // changed method name from PrintInfo() to PrintCustomerInfo()
     {
         System.out.println();
         System.out.print("Username: " + username + "");
@@ -224,12 +224,12 @@ public class Customer {
         System.out.println();
     }
 
-    public void PrintOrders()
+    public void PrintOrderHistory() // changed method name from PrintInfo() to PrintOrderHistory()
     {
         System.out.println();
         for (Order order : orders)
         {
-            order.PrintInfo();
+            order.PrintOrderInfo();
         }
         System.out.println();
     }

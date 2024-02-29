@@ -37,7 +37,7 @@ public class Order {
         this.boughtFor = boughtFor;
         this.purchaseTime = purchaseTime;
     }
-    public void PrintInfo()
+    public void PrintOrderInfo()
     {
         System.out.println(name + ", bought for " + boughtFor + "kr, time: " + purchaseTime + ".");
     }

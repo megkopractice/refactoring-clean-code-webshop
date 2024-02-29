@@ -46,43 +46,46 @@ public class WebShop {
         products = database.getProducts();
         customers = database.getCustomers();
 
-        // Buttons  Back, Quit
+        // Quit Button
 
-        Button backButton = new Button("back");
-        commands.put(backButton, new NavigateMenuCommand(this));
-        Button quitButton = new Button("quit");
-        commands.put(quitButton, new NavigateMenuCommand(this));
+        //Button backButton = new Button("back");
+        //commands.put(backButton, new NavigateMenuCommand(this));
+        Button quitButton = new Button("quit"); // ok
+        commands.put(quitButton, new QuitButtonCommand(this)); // ok
 
         // Buttons for the main menu
-        Button mainMenuButton = new Button("main menu");
-        commands.put(mainMenuButton, new NavigateMenuCommand(this));
+        Button mainMenuButton = new Button("main menu"); // ok
+        commands.put(mainMenuButton, new BackToMainMenuNavigationCommand(this)); // ok
         Button seeWearsButton = new Button("see wares");
-        commands.put(seeWearsButton, new NavigateMenuCommand(this));
+        commands.put(seeWearsButton, new SeeWaresNavigationCommand(this));// ok
         Button customerInfoButton = new Button("customer info");
-        commands.put(customerInfoButton, new NavigateMenuCommand(this));
-        Button loginMenuButton = new Button("login");
-        commands.put(loginMenuButton, new NavigateMenuCommand(this));
-
-
-        Button customerMenuButton = new Button("customer menu");
+        commands.put(customerInfoButton, new CustomerInfoNavigationCommand(this));// ok
         Button loginButton = new Button("login");
+        commands.put(loginButton, new LoginNavigationCommand(this));// ok
 
         // Buttons for the wares menu
-        Button waresMenuButton = new Button("wares menu");
-        commands.put(waresMenuButton, new PurchaseProductCommand(this));
         Button seeAllWaresButton = new Button("see all wares");
-        commands.put(seeAllWaresButton, new PurchaseProductCommand(this));
+        commands.put(seeAllWaresButton, new SeeAllWaresActionCommand(this));// ok
         Button purchaseWareButton = new Button("purchase a ware");
-        commands.put(purchaseWareButton, new PurchaseProductCommand(this));
+        commands.put(purchaseWareButton, new PurchaseAWareActionCommand(this));// ok
         Button sortWaresButton = new Button("sort wares");
-        commands.put(sortWaresButton, new NavigateMenuCommand(this)); // This should display sort wares
+        commands.put(sortWaresButton, new SortMenuDisplayCommand(this)); // ok. This should display sort wares
 
-        Button loginButton2 = new Button("login");
-
+        // Buttons for the sort wares menu (wares menu -> sort wares
+        Button sortByNameDescendingButton = new Button("sort by name, descending");
+        commands.put(sortByNameDescendingButton, new SortByNameDescendingCommand(this)); // ok
+        Button sortByNameAscendingButton = new Button("sort by name, ascending");
+        commands.put(sortByNameAscendingButton, new SortByNameAscendingCommand(this)); // ok
+        Button sortByPriceDescendingButton = new Button("sort by price, descending");
+        commands.put(sortByPriceDescendingButton, new SortByPriceDescendingCommand(this)); // ok
+        Button sortByPriceAscendingButton = new Button("sort by price, ascending");
+        commands.put(sortByPriceAscendingButton, new SortByPriceAscendingCommand(this)); // ok
 
         // Buttons for the customer menu
         Button seeOrdersButton = new Button("see your orders");
+        commands.put(seeOrdersButton, new SeeYourOrdersActionCommand(this)); // ok
         Button setInfoButton = new Button("set your info");
+        commands.put(setInfoButton, new NavigateMenuCommand(this));
         Button addFundsButton = new Button("add funds");
         Button loginButton3 = new Button("login");
         Button backButton2 = new Button("back");
@@ -94,13 +97,7 @@ public class WebShop {
         Button registerButton = new Button("register");
         Button backButton3 = new Button("back");
 
-        // Buttons for the sort wares menu (wares menu -> sort wares
-        Button sortByNameDescendingButton = new Button("sort by name, descending");
-        Button sortByNameAscendingButton = new Button("sort by name, ascending");
-        Button sortByPriceDescendingButton = new Button("sort by price, descending");
-        Button sortByPriceAscendingButton = new Button("sort by price, ascending");
-        Button loginButton5 = new Button("login");
-        Button backButton4 = new Button("back");
+
 
 
 
@@ -117,7 +114,7 @@ public class WebShop {
         commands.put(loginButton2, new LoginCommand(this, username, password)); // ???
         commands.put(backButton, new NavigateMenuCommand(this));
 
-        commands.put(seeOrdersButton, new NavigateMenuCommand(this));
+
         commands.put(setInfoButton, new NavigateMenuCommand(this));
         commands.put(addFundsButton, new NavigateMenuCommand(this));
         commands.put(loginButton3, new NavigateMenuCommand(this));
@@ -204,7 +201,8 @@ public class WebShop {
 
 
     // Refactored the Run method to displayMainMenu method
-    private void displayMainMenu() {
+    public void displayMainMenu() {
+        System.out.println("MAIN MENU");
         System.out.println("1: " + option1);
         System.out.println("2: " + option2);
         System.out.println("3: " + option3);
@@ -213,7 +211,11 @@ public class WebShop {
         }
     }
 
-    // Refactored the Run method to displayPurchaseMenu method
+    /**
+     * The displayPurchaseMenu method displays the purchase menu, which is a sub-menu of the wares menu.
+     * It is refactored from the Run method.
+     * It is encapsulated in the PurchaseAWareActionCommand class, using the Command pattern.
+     */
     public void displayPurchaseMenu() {
         for (int i = 0; i < amountOfOptions; i++) {
             System.out.println(i + 1 + ": " + products.get(i).getName() + ", " + products.get(i).getPrice() + "kr");
@@ -387,7 +389,6 @@ public class WebShop {
      * @param sortBy      the variable to sort by
      * @param isAscending true if the products should be sorted in ascending order, false if they should be sorted in descending order
      */
-
     public void mergeSort(String sortBy, boolean isAscending) {
         products = mergeSortHelper(products, sortBy, isAscending);
     }
@@ -444,6 +445,100 @@ public class WebShop {
         // Handle the case where sortBy is neither "name" nor "price"
         throw new IllegalArgumentException("Invalid sortBy value: " + sortBy);
     }
+
+    /**
+     * The navigateToWaresMenu method navigates to the wares menu.
+     * It is refactored from the Run method.
+     * It is encapsulated in the SeeWaresNavigationCommand class, using the Command pattern.
+     */
+    public void navigateToWaresMenu() {
+
+        option1 = "See all wares";
+        option2 = "Purchase a ware";
+        option3 = "Sort wares";
+        option4 = "Login/logout";
+        System.out.println("WARES MENU");
+        System.out.println("1: " + option1);
+        System.out.println("2: " + option2);
+        System.out.println("3: " + option3);
+        System.out.println("4: " + option4);
+    }
+
+    /**
+     * The navigateToCustomerMenu method navigates to the customer menu.
+     * It is refactored from the Run method.
+     * It is encapsulated in the CustomerInfoNavigationCommand class, using the Command pattern.
+     */
+    public void navigateToCustomerMenu() {
+
+        option1 = "See your orders";
+        option2 = "See your info"; // OBS! Assignment typo: "Set your info", it is supposed to be "See your info" otherwise there is no corresponding code that sets your info!
+        option3 = "Add funds";
+        option4 = "Login/logout";
+        System.out.println("CUSTOMER MENU");
+        System.out.println("1: " + option1);
+        System.out.println("2: " + option2);
+        System.out.println("3: " + option3);
+        System.out.println("4: " + option4);
+    }
+
+    /**
+     * The navigateToLoginMenu method navigates to the login menu.
+     * It is refactored from the Run method.
+     * It is encapsulated in the LoginNavigationCommand class, using the Command pattern.
+     */
+    public void navigateToLoginMenu() {
+
+        option1 = "Set Username";
+        option2 = "Set Password";
+        option3 = "Login";
+        option4 = "Register";
+        System.out.println("LOGIN MENU");
+        System.out.println("1: " + option1);
+        System.out.println("2: " + option2);
+        System.out.println("3: " + option3);
+        System.out.println("4: " + option4);
+    }
+
+    /**
+     * The seeAllWares method navigates to the main menu.
+     * It is refactored from the Run method.
+     * It is encapsulated in the SeeAllWaresActionCommand class, using the Command pattern.
+     */
+    public void seeAllWares() {
+        for (Product product : products) {
+            product.PrintInfo();
+        }
+    }
+
+    /**
+     * The displaySortMenu method displays the sort menu, which is a sub-menu of the wares menu.
+     * It is refactored from the Run method.
+     * It is encapsulated in the SortMenuDisplayCommand class, using the Command pattern.
+     */
+    public void displaySortMenu() {
+        option1 = "Sort by name, descending";
+        option2 = "Sort by name, ascending";
+        option3 = "Sort by price, descending";
+        option4 = "Sort by price, ascending";
+        System.out.println("SORT MENU");
+        System.out.println("1: " + option1);
+        System.out.println("2: " + option2);
+        System.out.println("3: " + option3);
+        System.out.println("4: " + option4);
+    }
+
+    /**
+     * The seeYourOrders method displays the orders of the current customer, which is a sub-menu of the customer menu.
+     * It is refactored from the Run method.
+     * It is encapsulated in the SeeYourOrdersActionCommand class, using the Command pattern.
+     */
+    public void seeYourOrders() {
+        currentCustomer.PrintOrderHistory();
+    }
+
+
+
 
 }
 
@@ -523,7 +618,7 @@ public class WebShop {
                             case 2:
                                 if (currentCustomer != null) {
                                     option1 = "See your orders";
-                                    option2 = "Set your info";
+                                    option2 = "Set your info"; // maybe this was supposed to be See your info
                                     option3 = "Add funds";
                                     option4 = "";
                                     amountOfOptions = 3;

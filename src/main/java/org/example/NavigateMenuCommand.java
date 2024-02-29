@@ -5,4 +5,6 @@ package org.example;
  */
 public class NavigateMenuCommand implements Command{
 
+    // delete later
+
 }
