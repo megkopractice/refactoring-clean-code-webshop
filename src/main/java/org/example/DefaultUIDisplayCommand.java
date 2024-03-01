@@ -1,16 +1,15 @@
 package org.example;
 
-public class LoginActionCommand implements Command{
-
+public class DefaultUIDisplayCommand implements Command{
     private WebShop webShop;
 
-    public LoginActionCommand(WebShop webShop)
+    public DefaultUIDisplayCommand(WebShop webShop)
     {
         this.webShop = webShop;
     }
 
     @Override
     public void execute() {
-        webShop.login();
+        webShop.displayDefaultMenu();
     }
 }

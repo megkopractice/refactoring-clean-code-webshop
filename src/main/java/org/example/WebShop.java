@@ -46,22 +46,22 @@ public class WebShop {
         products = database.getProducts();
         customers = database.getCustomers();
 
-        // Quit Button
+        // Back / Quit Button
 
-        //Button backButton = new Button("back");
-        //commands.put(backButton, new NavigateMenuCommand(this));
+        Button backToMainButton = new Button("back");
+        commands.put(backToMainButton, new BackToMainMenuNavigationCommand(this));
         Button quitButton = new Button("quit"); // ok
         commands.put(quitButton, new QuitButtonCommand(this)); // ok
 
         // Buttons for the main menu
-        Button mainMenuButton = new Button("main menu"); // ok
-        commands.put(mainMenuButton, new BackToMainMenuNavigationCommand(this)); // ok
+        Button defaultMenuButton = new Button("default menu"); // ok
+        commands.put(defaultMenuButton, new DefaultUIDisplayCommand(this)); // ok
         Button seeWearsButton = new Button("see wares");
         commands.put(seeWearsButton, new SeeWaresNavigationCommand(this));// ok
         Button customerInfoButton = new Button("customer info");
         commands.put(customerInfoButton, new CustomerInfoNavigationCommand(this));// ok
-        Button loginButton = new Button("login");
-        commands.put(loginButton, new LoginNavigationCommand(this));// ok
+        Button loginMenuButton = new Button("login");
+        commands.put(loginMenuButton, new LoginMenuDisplayCommand(this));// ok
 
         // Buttons for the wares menu
         Button seeAllWaresButton = new Button("see all wares");
@@ -84,54 +84,20 @@ public class WebShop {
         // Buttons for the customer menu
         Button seeOrdersButton = new Button("see your orders");
         commands.put(seeOrdersButton, new SeeYourOrdersActionCommand(this)); // ok
-        Button setInfoButton = new Button("set your info");
-        commands.put(setInfoButton, new NavigateMenuCommand(this));
+        Button seeInfoButton = new Button("set your info");
+        commands.put(seeInfoButton, new SeeYourInfoActionCommand(this)); // ok
         Button addFundsButton = new Button("add funds");
-        Button loginButton3 = new Button("login");
-        Button backButton2 = new Button("back");
+        commands.put(addFundsButton, new AddFundsActionCommand(this)); // ok
 
         // Buttons for the login menu
         Button setUsernameButton = new Button("set username");
+        commands.put(setUsernameButton, new SetUsernameActionCommand(this));// ok
         Button setPasswordButton = new Button("set password");
-        Button loginButton4 = new Button("login");
+        commands.put(setPasswordButton, new SetPasswordActionCommand(this));// ok
+        Button loginButton = new Button("login");
+        commands.put(loginButton, new LoginActionCommand(this)); // ok
         Button registerButton = new Button("register");
-        Button backButton3 = new Button("back");
-
-
-
-
-
-        commands.put(seeWearsButton, new NavigateMenuCommand(this));
-        commands.put(customerInfoButton, new NavigateMenuCommand(this));
-
-        commands.put(waresMenuButton, new NavigateMenuCommand(this));
-        commands.put(customerMenuButton, new NavigateMenuCommand(this));
-        commands.put(loginButton, new NavigateMenuCommand(this));
-
-        commands.put(seeAllWaresButton, new NavigateMenuCommand(this));
-        commands.put(purchaseWareButton, new PurchaseProductCommand(this)); // >>
-        commands.put(sortWaresButton, new NavigateMenuCommand(this)); // >>
-        commands.put(loginButton2, new LoginCommand(this, username, password)); // ???
-        commands.put(backButton, new NavigateMenuCommand(this));
-
-
-        commands.put(setInfoButton, new NavigateMenuCommand(this));
-        commands.put(addFundsButton, new NavigateMenuCommand(this));
-        commands.put(loginButton3, new NavigateMenuCommand(this));
-        commands.put(backButton2, new NavigateMenuCommand(this));
-
-        commands.put(setUsernameButton, new NavigateMenuCommand(this));
-        commands.put(setPasswordButton, new NavigateMenuCommand(this));
-        commands.put(loginButton4, new NavigateMenuCommand(this));
-        commands.put(registerButton, new NavigateMenuCommand(this));
-        commands.put(backButton3, new NavigateMenuCommand(this));
-
-        commands.put(sortByNameDescendingButton, new NavigateMenuCommand(this));
-        commands.put(sortByNameAscendingButton, new NavigateMenuCommand(this));
-        commands.put(sortByPriceDescendingButton, new NavigateMenuCommand(this));
-        commands.put(sortByPriceAscendingButton, new NavigateMenuCommand(this));
-        commands.put(loginButton5, new NavigateMenuCommand(this));
-        commands.put(backButton4, new NavigateMenuCommand(this));
+        commands.put(registerButton, new RegisterActionCommand(this)); // ok
 
     }
 
@@ -141,10 +107,9 @@ public class WebShop {
      * It is refactored from the Run method.
      * It is refactored to use the Command pattern.
      */
-    public void displayMenu() {
+    public void displayDefaultMenu() {
         System.out.println("Welcome to the WebShop!");
         while (running) {
-            System.out.println(info);
 
             if(currentMenu.equals("purchase menu")) {
                 displayPurchaseMenu();
@@ -152,6 +117,7 @@ public class WebShop {
                 displayMainMenu();
             }
 
+            System.out.println(info);
             displayButtonInstructions();
             displayUserStatus();
             String choice = scanner.nextLine().trim().toLowerCase();
@@ -301,7 +267,7 @@ public class WebShop {
      * The register method registers a new customer.
      * Newly added method, using the Builder pattern.
      */
-    public void register(String username, String password, String firstName, String lastName, String email, int age, String address, String phoneNumber) {
+    public void register() {
         // Check if the username is already taken
         System.out.println("Please write your username.");
         String newUsername = scanner.nextLine();
@@ -310,16 +276,30 @@ public class WebShop {
             System.out.println("Username already taken. Please choose another one.");
             return;
         }
+        System.out.println("Please write your password.");
+        String passwordReg  = scanner.nextLine();
+        System.out.println("Please write your first name.");
+        String firstNameReg = scanner.nextLine();
+        System.out.println("Please write your last name.");
+        String lastNameReg = scanner.nextLine();
+        System.out.println("Please write your email.");
+        String emailReg = scanner.nextLine();
+        System.out.println("Please write your age.");
+        int ageReg = scanner.nextInt();
+        System.out.println("Please write your address.");
+        String addressReg = scanner.nextLine();
+        System.out.println("Please write your phone number.");
+        String phoneNumberReg = scanner.nextLine();
 
         // Create a new customer using the Builder pattern
         Customer newCustomer = new Customer.Builder(username)
-                .password(password)
-                .firstName(firstName)
-                .lastName(lastName)
-                .email(email)
-                .age(age)
-                .address(address)
-                .phoneNumber(phoneNumber)
+                .password(passwordReg)
+                .firstName(firstNameReg)
+                .lastName(lastNameReg)
+                .email(emailReg)
+                .age(ageReg)
+                .address(addressReg)
+                .phoneNumber(phoneNumberReg)
                 .build();
 
         // Add the new customer to the list of customers
@@ -342,8 +322,7 @@ public class WebShop {
      * The login method logs in a customer.
      * Newly added method, using the Builder pattern.
      */
-
-    public void login(String username, String password) {
+    public void login() {
         System.out.println("Please type in your username.");
         String usernameInput = scanner.nextLine();
         System.out.println("Please type in your password.");
@@ -356,7 +335,7 @@ public class WebShop {
             return;
         }
         // Check if the password matches
-        if(!foundCustomer.CheckPassword(password)) {
+        if(!foundCustomer.CheckPassword(passwordInput)) {
             System.out.println("Incorrect password. Please try again.");
             return;
         }
@@ -485,7 +464,7 @@ public class WebShop {
     /**
      * The navigateToLoginMenu method navigates to the login menu.
      * It is refactored from the Run method.
-     * It is encapsulated in the LoginNavigationCommand class, using the Command pattern.
+     * It is encapsulated in the LoginMenuDisplayCommand class, using the Command pattern.
      */
     public void navigateToLoginMenu() {
 
@@ -535,6 +514,75 @@ public class WebShop {
      */
     public void seeYourOrders() {
         currentCustomer.PrintOrderHistory();
+    }
+
+    /**
+     * The seeYourInfo method displays the info of the current customer, which is a sub-menu of the customer menu.
+     * It is refactored from the Run method, which was originally named PrintInfo.
+     * It is encapsulated in the SeeYourInfoActionCommand class, using the Command pattern.
+     */
+    public void seeYourInfo() {
+        currentCustomer.PrintCustomerInfo();
+    }
+
+    /**
+     * The addFundsToCustomerAccount method adds funds to the current customer's account.
+     * It is refactored from the Run method.
+     * It is encapsulated in the AddFundsActionCommand class, using the Command pattern.
+     */
+    public void addFundsToCustomerAccount() {
+        int currentAmount = currentCustomer.getFunds();
+        System.out.println("Your current funds: " + currentAmount);
+        System.out.println("How much funds would you like to add?");
+        int amount = scanner.nextInt();
+        currentCustomer.addFunds(amount);
+        System.out.println(amount + " is added to your profile." + " Your current funds: " + currentAmount+amount);
+    }
+
+    /**
+     * The setUsername method sets the username of the current customer.
+     * It is refactored from the Run method.
+     * It is encapsulated in the SetUsernameActionCommand class, using the Command pattern.
+     * It is refactored to use the Builder pattern.
+     */
+    public void setUsername() {
+        System.out.println("A keyboard appears.");
+        System.out.println("Please type in your username.");
+        String newUsername = scanner.nextLine();
+        currentCustomer = new Customer.Builder(newUsername)
+                .password(currentCustomer.getPassword())
+                .firstName(currentCustomer.getFirstName())
+                .lastName(currentCustomer.getLastName())
+                .email(currentCustomer.getEmail())
+                .age(currentCustomer.getAge())
+                .address(currentCustomer.getAddress())
+                .phoneNumber(currentCustomer.getPhoneNumber())
+                .funds(currentCustomer.getFunds())
+                .orders(currentCustomer.getOrders())
+                .build();
+    }
+
+    /**
+     * The setPassword method sets the password of the current customer.
+     * It is refactored from the Run method.
+     * It is encapsulated in the SetPasswordActionCommand class, using the Command pattern.
+     * It is refactored to use the Builder pattern.
+     */
+    public void setPassword() {
+        System.out.println("A keyboard appears.");
+        System.out.println("Please type in your password.");
+        password = scanner.nextLine();
+        currentCustomer = new Customer.Builder(currentCustomer.getUsername())
+                .password(password)
+                .firstName(currentCustomer.getFirstName())
+                .lastName(currentCustomer.getLastName())
+                .email(currentCustomer.getEmail())
+                .age(currentCustomer.getAge())
+                .address(currentCustomer.getAddress())
+                .phoneNumber(currentCustomer.getPhoneNumber())
+                .funds(currentCustomer.getFunds())
+                .orders(currentCustomer.getOrders())
+                .build();
     }
 
 
