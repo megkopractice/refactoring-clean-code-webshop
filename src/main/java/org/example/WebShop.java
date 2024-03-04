@@ -46,7 +46,7 @@ public class WebShop {
         products = database.getProducts();
         customers = database.getCustomers();
 
-        // Back / Quit Button
+        // Back, Quit Button
 
         Button backToMainButton = new Button("back");
         commands.put(backToMainButton, new BackToMainMenuNavigationCommand(this));
@@ -110,22 +110,18 @@ public class WebShop {
     public void displayDefaultMenu() {
         System.out.println("Welcome to the WebShop!");
         while (running) {
-
-            if(currentMenu.equals("purchase menu")) {
-                displayPurchaseMenu();
-            } else {
-                displayMainMenu();
-            }
+            Command currentCommand = commands.get(new Button(currentMenu));
+            currentCommand.execute();
 
             System.out.println(info);
             displayButtonInstructions();
             displayUserStatus();
             String choice = scanner.nextLine().trim().toLowerCase();
-            handleOption(choice);
+            currentMenu = handleOption(choice);
         }
     }
 
-    private void handleOption(String choice) {
+    private String handleOption(String choice) {
         Button selectedButton = null;
         for (Button button : commands.keySet()) {
             if (button.getName().equalsIgnoreCase(choice)) {
@@ -140,6 +136,7 @@ public class WebShop {
         } else {
             System.out.println("Invalid option. Choose from the available options.");
         }
+        return currentMenu;
     }
 
 
