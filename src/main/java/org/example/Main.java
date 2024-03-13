@@ -3,19 +3,32 @@ package org.example;
 public class Main {
     public static void main(String[] args) {
         WebShop webShop = new WebShop();
+        //Command currentCommand = webShop.commands.get(new Button("default menu"));
 
-        CommandHandler defaultUIHandler = new CommandHandler();
-        CommandHandler purchaseProductHandler = new CommandHandler();
-        CommandHandler sortProductsHandler = new CommandHandler();
-        CommandHandler loginHandler = new CommandHandler();
-        CommandHandler registerHandler = new CommandHandler();
+        Command defaultUIDisplay = new DefaultUIDisplayCommand(webShop);
+        Command purchaseAware = new PurchaseAWareActionCommand(webShop);
+        Command sortByNameAscending = new SortByNameAscendingCommand(webShop);
+        Command sortByNameDescending = new SortByNameDescendingCommand(webShop);
+        Command sortByPriceAscending = new SortByPriceAscendingCommand(webShop);
+        Command sortByPriceDescending = new SortByPriceDescendingCommand(webShop);
+        Command loginMenuDisplay = new LoginMenuDisplayCommand(webShop);
+        Command register = new RegisterActionCommand(webShop);
 
+        CommandHandler commandHandler = new CommandHandler();
         // Display the main menu (1. See Wares, 2. Customer Info 3. Login)
-        defaultUIHandler.invoke(new DefaultUIDisplayCommand(webShop));
+        /*
+        if(currentCommand.equals(webShop.commands.get(new Button("default menu")))){
+            defaultUIHandler.invoke(new DefaultUIDisplayCommand(webShop));
+        }*/
 
-        //purchaseProductHandler.invoke(new PurchaseAWareActionCommand(webShop));
-
-
+        commandHandler.invoke(defaultUIDisplay);
+        commandHandler.invoke(purchaseAware);
+        commandHandler.invoke(sortByNameAscending);
+        commandHandler.invoke(sortByNameDescending);
+        commandHandler.invoke(sortByPriceAscending);
+        commandHandler.invoke(sortByPriceDescending);
+        commandHandler.invoke(loginMenuDisplay);
+        commandHandler.invoke(register);
 
     }
 }

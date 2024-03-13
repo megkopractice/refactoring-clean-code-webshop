@@ -13,12 +13,16 @@ public class Database {
     public Database()
     {
         productsInDatabase = new ArrayList<Product>();
+        productsInDatabase.add(new Product("Shirt", 100, 2));
         productsInDatabase.add(new Product("Mirror", 300, 2));
-        productsInDatabase.add(new Product("Car", 2000000, 2));
-        productsInDatabase.add(new Product("Candle", 50, 2));
-        productsInDatabase.add(new Product("Computer", 100000, 2));
-        productsInDatabase.add(new Product("Game", 599, 2));
-        productsInDatabase.add(new Product("Painting", 399, 2));
+        productsInDatabase.add(new Product("Coffee", 30, 2));
+        productsInDatabase.add(new Product("Pen", 50, 2));
+        productsInDatabase.add(new Product("Book", 200, 2));
+        productsInDatabase.add(new Product("iPhone 15 Pro", 13500, 2));
+        productsInDatabase.add(new Product("Apple Vision Pro", 50000, 2));
+        productsInDatabase.add(new Product("Laptop", 15000, 2));
+        productsInDatabase.add(new Product("Game", 600, 2));
+        productsInDatabase.add(new Product("Painting", 400, 2));
         productsInDatabase.add(new Product("Chair", 500, 2));
         productsInDatabase.add(new Product("Table", 1000, 2));
         productsInDatabase.add(new Product("Bed", 20000, 2));

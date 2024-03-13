@@ -9,6 +9,13 @@ public class SortByNameDescendingCommand implements Command {
 
     @Override
     public void execute() {
+        // sort the list of products by name in descending order
         webShop.mergeSort("name", false);
+
+        // Then print the sorted list
+        for(Product product: webShop.products){
+            System.out.println(product.getName() + ": " + product.getPrice() + "kr, " + product.getNrInStock() + " in stock.");
+        }
+
     }
 }

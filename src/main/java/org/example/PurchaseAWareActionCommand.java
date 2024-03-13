@@ -10,6 +10,6 @@ public class PurchaseAWareActionCommand implements Command{
 
     @Override
     public void execute() {
-        webShop.displayPurchaseMenu();
+        webShop.purchaseAWare();
     }
 }

@@ -102,7 +102,7 @@ public class Customer {
         {
             this.username = username;
             this.orders = new ArrayList<>();
-            this.funds = 0;
+            this.funds = 100; // bonus funds for new customers
         }
 
         // Setters

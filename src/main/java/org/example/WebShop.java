@@ -1,5 +1,6 @@
 package org.example;
 
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -13,25 +14,30 @@ import java.util.*;
  * 2. Proxy Pattern on DatabaseProxy class　☆ OK
  * 3. Command Pattern on WebShop class (No Switch statements or else-if statements). ☆ OK
  *    - Command interface, -CommandHandler class
- *    - Command classes: NavigateMenuCommand, PurchaseProductCommand, RegisterCommand, LoginCommand, LogoutCommand, SortWaresCommand　
+ *    - Command classes: all kinds of commands (e.g. SortMenuDisplayCommand, RegisterActionCommand)　
  * 4. Merge Sort algorithm on mergeSort method in WebShop class ☆ OK
+ *
+ * Info: There seemed to be some logical errors or typos here and there in the original code which took me a while to figure out.
+ * One on them is that purchase can be interchanged with wares menu, so I replaced purchase with wares menu.
  * @author Megumi Kogo
  */
 
 public class WebShop {
     boolean running = true;
     Database database = new Database();
-    ArrayList<Product> products = new ArrayList<Product>();
-    ArrayList<Customer> customers = new ArrayList<Customer>();
+    ArrayList<Product> products;
+    ArrayList<Customer> customers;
 
     String currentMenu = "main menu";
+    //String currentMenu = "wares menu";
+
     int currentChoice = 1;
     int amountOfOptions = 3;
     String option1 = "See Wares";
     String option2 = "Customer Info";
     String option3 = "Login";
     String option4 = "";
-    String info = "What would you like to do?";
+    String info = "What would you like to do? Type in the button name.";
 
     String username = null;
     String password = null;
@@ -39,8 +45,8 @@ public class WebShop {
 
     Scanner scanner = new Scanner(System.in);
 
-    private Map<Button, Command> commands = new HashMap<>();
-    private List<Runnable> purchaseActions;
+    public Map<Button, Command> commands = new HashMap<>();
+    //private List<Runnable> purchaseActions;
 
     public WebShop() {
         products = database.getProducts();
@@ -48,80 +54,99 @@ public class WebShop {
 
         // Back, Quit Button
 
-        Button backToMainButton = new Button("back");
-        commands.put(backToMainButton, new BackToMainMenuNavigationCommand(this));
-        Button quitButton = new Button("quit"); // ok
-        commands.put(quitButton, new QuitButtonCommand(this)); // ok
+        Button backToMain = new Button("back");
+        commands.put(backToMain, new BackToMainMenuNavigationCommand(this));
+        Button quit = new Button("quit"); // ok
+        commands.put(quit, new QuitButtonCommand(this)); // ok
 
         // Buttons for the main menu
-        Button defaultMenuButton = new Button("default menu"); // ok
-        commands.put(defaultMenuButton, new DefaultUIDisplayCommand(this)); // ok
-        Button seeWearsButton = new Button("see wares");
-        commands.put(seeWearsButton, new SeeWaresNavigationCommand(this));// ok
-        Button customerInfoButton = new Button("customer info");
-        commands.put(customerInfoButton, new CustomerInfoNavigationCommand(this));// ok
-        Button loginMenuButton = new Button("login");
-        commands.put(loginMenuButton, new LoginMenuDisplayCommand(this));// ok
+        Button defaultMenu = new Button("default menu"); // ok
+        commands.put(defaultMenu, new DefaultUIDisplayCommand(this)); // ok
+        Button mainMenu = new Button("main menu"); // ok
+        commands.put(mainMenu, new BackToMainMenuNavigationCommand(this)); // ok
+        Button seeWears = new Button("see wares");
+        commands.put(seeWears, new SeeWaresNavigationCommand(this));// ok
+        Button waresMenu = new Button("wares menu");
+        commands.put(waresMenu, new SeeWaresNavigationCommand(this));// ok
+        Button customerInfo = new Button("customer info");
+        commands.put(customerInfo, new CustomerInfoNavigationCommand(this));// ok
+        Button loginMenu = new Button("login menu");
+        commands.put(loginMenu, new LoginMenuDisplayCommand(this));// ok
 
         // Buttons for the wares menu
-        Button seeAllWaresButton = new Button("see all wares");
-        commands.put(seeAllWaresButton, new SeeAllWaresActionCommand(this));// ok
-        Button purchaseWareButton = new Button("purchase a ware");
-        commands.put(purchaseWareButton, new PurchaseAWareActionCommand(this));// ok
-        Button sortWaresButton = new Button("sort wares");
-        commands.put(sortWaresButton, new SortMenuDisplayCommand(this)); // ok. This should display sort wares
+        Button seeAllWares = new Button("see all wares");
+        commands.put(seeAllWares, new SeeAllWaresActionCommand(this));// ok
+        Button purchaseWare = new Button("purchase a ware");
+        commands.put(purchaseWare, new PurchaseAWareActionCommand(this));// ok
+        Button sortWares = new Button("sort wares");
+        commands.put(sortWares, new SortMenuDisplayCommand(this)); // ok. This should display sort wares
 
         // Buttons for the sort wares menu (wares menu -> sort wares
-        Button sortByNameDescendingButton = new Button("sort by name, descending");
-        commands.put(sortByNameDescendingButton, new SortByNameDescendingCommand(this)); // ok
-        Button sortByNameAscendingButton = new Button("sort by name, ascending");
-        commands.put(sortByNameAscendingButton, new SortByNameAscendingCommand(this)); // ok
-        Button sortByPriceDescendingButton = new Button("sort by price, descending");
-        commands.put(sortByPriceDescendingButton, new SortByPriceDescendingCommand(this)); // ok
-        Button sortByPriceAscendingButton = new Button("sort by price, ascending");
-        commands.put(sortByPriceAscendingButton, new SortByPriceAscendingCommand(this)); // ok
+        Button sortByNameDescending = new Button("sort by name, descending");
+        commands.put(sortByNameDescending, new SortByNameDescendingCommand(this)); // ok
+        Button sortByNameAscending = new Button("sort by name, ascending");
+        commands.put(sortByNameAscending, new SortByNameAscendingCommand(this)); // ok
+        Button sortByPriceDescending = new Button("sort by price, descending");
+        commands.put(sortByPriceDescending, new SortByPriceDescendingCommand(this)); // ok
+        Button sortByPriceAscending = new Button("sort by price, ascending");
+        commands.put(sortByPriceAscending, new SortByPriceAscendingCommand(this)); // ok
 
         // Buttons for the customer menu
-        Button seeOrdersButton = new Button("see your orders");
-        commands.put(seeOrdersButton, new SeeYourOrdersActionCommand(this)); // ok
-        Button seeInfoButton = new Button("set your info");
-        commands.put(seeInfoButton, new SeeYourInfoActionCommand(this)); // ok
-        Button addFundsButton = new Button("add funds");
-        commands.put(addFundsButton, new AddFundsActionCommand(this)); // ok
+        Button seeOrders = new Button("see your orders");
+        commands.put(seeOrders, new SeeYourOrdersActionCommand(this)); // ok
+        Button seeInfo = new Button("see your info"); // set your info is a typo again. It should be "see your info"
+        commands.put(seeInfo, new SeeYourInfoActionCommand(this)); // ok
+        Button addFunds = new Button("add funds");
+        commands.put(addFunds, new AddFundsActionCommand(this)); // ok
 
         // Buttons for the login menu
-        Button setUsernameButton = new Button("set username");
-        commands.put(setUsernameButton, new SetUsernameActionCommand(this));// ok
-        Button setPasswordButton = new Button("set password");
-        commands.put(setPasswordButton, new SetPasswordActionCommand(this));// ok
-        Button loginButton = new Button("login");
-        commands.put(loginButton, new LoginActionCommand(this)); // ok
-        Button registerButton = new Button("register");
-        commands.put(registerButton, new RegisterActionCommand(this)); // ok
+        Button setUsername = new Button("set username");
+        commands.put(setUsername, new SetUsernameActionCommand(this));// ok
+        Button setPassword = new Button("set password");
+        commands.put(setPassword, new SetPasswordActionCommand(this));// ok
+        Button login = new Button("login");
+        commands.put(login, new LoginActionCommand(this)); // ok
+        Button register = new Button("register");
+        commands.put(register, new RegisterActionCommand(this)); // ok
 
     }
 
     /**
-     * The displayMenu method displays the menu and handles the user's input.
+     * The displayDefaultMenu method displays the menu and handles the user's input.
      * It is the main method of the program.
      * It is refactored from the Run method.
      * It is refactored to use the Command pattern.
      */
     public void displayDefaultMenu() {
         System.out.println("Welcome to the WebShop!");
+
+        boolean handleOptionExecuted = false;
+
         while (running) {
-            Command currentCommand = commands.get(new Button(currentMenu));
-            currentCommand.execute();
+            if(!handleOptionExecuted){
+                for(Button button: commands.keySet()){
+                    if(button.getName().equals(currentMenu)){
+                        commands.get(button).execute();
+                    }
+                }
+            }
 
             System.out.println(info);
             displayButtonInstructions();
             displayUserStatus();
+
             String choice = scanner.nextLine().trim().toLowerCase();
-            currentMenu = handleOption(choice);
+            handleOption(choice);
+            handleOptionExecuted = true;
         }
     }
 
-    private String handleOption(String choice) {
+    /**
+     * The handleOption method finds the selected button and executes the corresponding command.
+     * It is called by the displayDefaultMenu method.
+     * It is refactored to use the Command pattern.
+     */
+    private void handleOption(String choice) {
         Button selectedButton = null;
         for (Button button : commands.keySet()) {
             if (button.getName().equalsIgnoreCase(choice)) {
@@ -133,53 +158,21 @@ public class WebShop {
         if (selectedButton != null) {
             Command command = commands.get(selectedButton);
             command.execute();
+
         } else {
             System.out.println("Invalid option. Choose from the available options.");
         }
-        return currentMenu;
     }
-
-
-    /*
-    // Refactored the Run method to displayMenu method
-    public void displayMenu() {
-        System.out.println("Welcome to the WebShop!");
-
-        while (running) {
-            System.out.println(info);
-
-            if(currentMenu.equals("purchase menu")) {
-                displayPurchaseMenu();
-            } else {
-                displayMainMenu();
-            }
-
-            displayOptions();
-            displayButtonInstructions();
-            displayUserStatus();
-            String choice = scanner.nextLine().toLowerCase();
-            handleChoice(choice);
-        }
-    }*/
-
 
     // Refactored the Run method to displayMainMenu method
     public void displayMainMenu() {
         System.out.println("MAIN MENU");
-        System.out.println("1: " + option1);
-        System.out.println("2: " + option2);
-        System.out.println("3: " + option3);
-        if(amountOfOptions > 3) {
-            System.out.println("4: " + option4);
-        }
+        System.out.println("1: " + "See Wares");
+        System.out.println("2: " + "Customer Info");
+        System.out.println("3: " + "Login Menu");
     }
 
-    /**
-     * The displayPurchaseMenu method displays the purchase menu, which is a sub-menu of the wares menu.
-     * It is refactored from the Run method.
-     * It is encapsulated in the PurchaseAWareActionCommand class, using the Command pattern.
-     */
-    public void displayPurchaseMenu() {
+    /*public void displayPurchaseMenu() {
         for (int i = 0; i < amountOfOptions; i++) {
             System.out.println(i + 1 + ": " + products.get(i).getName() + ", " + products.get(i).getPrice() + "kr");
         }
@@ -219,7 +212,7 @@ public class WebShop {
 
     // Refactored the Run method to displayButtonInstructions method
     private void displayButtonInstructions() {
-        System.out.println("Your buttons are : [Option Name] | Back | Quit");
+        System.out.println("Your buttons are : Main Menu | [Option Name] | Back | Quit");
     }
 
     // Refactored the Run method to displayUserStatus method
@@ -231,41 +224,15 @@ public class WebShop {
         }
     }
 
-    /**
-     * The purchaseProduct method purchases a product.
-     * It is refactored from the Run method.
-     */
-    public void purchaseProduct() {
-        if(currentMenu.equals("purchase menu")) {
-            int index = currentChoice - 1;
-            Product product = products.get(index);
-            if(product.InStock()) {
-                if(currentCustomer.CanAfford(product.getPrice())) {
-                    currentCustomer.removeFunds(product.getPrice());
-                    product.decreaseStock();
-                    currentCustomer.getOrders().add(new Order(product.getName(), product.getPrice(), LocalDateTime.now()));
-                    System.out.println();
-                    System.out.println("Successfully bought " + product.getName());
-                    System.out.println();
-                } else {
-                    System.out.println();
-                    System.out.println("You cannot afford.");
-                    System.out.println();
-                }
-            } else {
-                System.out.println();
-                System.out.println("Not in stock.");
-                System.out.println();
-            }
-        }
-    }
+
 
     /**
      * The register method registers a new customer.
-     * Newly added method, using the Builder pattern.
+     * The Builder pattern is used to create a new customer.
      */
     public void register() {
         // Check if the username is already taken
+        System.out.println("REGISTRATION");
         System.out.println("Please write your username.");
         String newUsername = scanner.nextLine();
 
@@ -282,14 +249,14 @@ public class WebShop {
         System.out.println("Please write your email.");
         String emailReg = scanner.nextLine();
         System.out.println("Please write your age.");
-        int ageReg = scanner.nextInt();
+        int ageReg = Integer.parseInt(scanner.nextLine());
         System.out.println("Please write your address.");
         String addressReg = scanner.nextLine();
         System.out.println("Please write your phone number.");
         String phoneNumberReg = scanner.nextLine();
 
         // Create a new customer using the Builder pattern
-        Customer newCustomer = new Customer.Builder(username)
+        Customer newCustomer = new Customer.Builder(newUsername)
                 .password(passwordReg)
                 .firstName(firstNameReg)
                 .lastName(lastNameReg)
@@ -316,30 +283,44 @@ public class WebShop {
     }
 
     /**
-     * The login method logs in a customer.
-     * Newly added method, using the Builder pattern.
+     * The login method logs in a customer and logs out the current customer if there is one.
+     *
      */
     public void login() {
-        System.out.println("Please type in your username.");
-        String usernameInput = scanner.nextLine();
-        System.out.println("Please type in your password.");
-        String passwordInput = scanner.nextLine();
-        Customer foundCustomer = findCustomerByUsername(usernameInput);
-
-        // Check if the username exists
-        if(foundCustomer == null) {
-            System.out.println("Username not found. Please register if you are a new user.");
-            return;
+        if (currentCustomer == null) {
+            // User is not logged in, prompt for login
+            System.out.println("USER LOGIN");
+            System.out.println("Please type in your username.");
+            String usernameInput = scanner.nextLine();
+            Customer foundCustomer = findCustomerByUsername(usernameInput);
+            // Check if the username exists
+            if(foundCustomer == null) {
+                System.out.println("Username not found. Please register if you are a new user.");
+                return;
+            }
+            System.out.println("Please type in your password.");
+            String passwordInput = scanner.nextLine();
+            // Check if the password matches
+            if(!foundCustomer.CheckPassword(passwordInput)) {
+                System.out.println("Incorrect password. Please try again.");
+                return;
+            }
+            // Set the current customer to the one who logged in
+            currentCustomer = foundCustomer;
+            System.out.println("Login successful! Welcome, " + currentCustomer.getFirstName() + "!");
+        } else {
+            // User is already logged in, prompt for logout
+            System.out.println("You are already logged in as " + currentCustomer.getUsername() + ".");
+            System.out.println("Do you want to log out? (yes/no)");
+            String choice = scanner.nextLine().toLowerCase();
+            if (choice.equals("yes")) {
+                // Log out the current user
+                currentCustomer = null;
+                System.out.println("Logout successful!");
+            } else {
+                System.out.println("Logout canceled.");
+            }
         }
-        // Check if the password matches
-        if(!foundCustomer.CheckPassword(passwordInput)) {
-            System.out.println("Incorrect password. Please try again.");
-            return;
-        }
-
-        // Set the current customer to the one who logged in
-        currentCustomer = foundCustomer;
-        System.out.println("Login successful! Welcome, " + currentCustomer.getFirstName() + "!");
     }
 
     // Helper method to find a customer by username
@@ -350,12 +331,6 @@ public class WebShop {
             }
         }
         return null;
-    }
-
-    // Method to log out the current customer
-    public void logout() {
-        currentCustomer = null;
-        System.out.println("Logout successful!");
     }
 
     /**
@@ -432,7 +407,7 @@ public class WebShop {
         option1 = "See all wares";
         option2 = "Purchase a ware";
         option3 = "Sort wares";
-        option4 = "Login/logout";
+        option4 = "Login";
         System.out.println("WARES MENU");
         System.out.println("1: " + option1);
         System.out.println("2: " + option2);
@@ -450,7 +425,7 @@ public class WebShop {
         option1 = "See your orders";
         option2 = "See your info"; // OBS! Assignment typo: "Set your info", it is supposed to be "See your info" otherwise there is no corresponding code that sets your info!
         option3 = "Add funds";
-        option4 = "Login/logout";
+        option4 = "Login";
         System.out.println("CUSTOMER MENU");
         System.out.println("1: " + option1);
         System.out.println("2: " + option2);
@@ -477,7 +452,8 @@ public class WebShop {
     }
 
     /**
-     * The seeAllWares method navigates to the main menu.
+     * The seeAllWares method shows all the wares.
+     * It is a sub-menu of the wares menu.
      * It is refactored from the Run method.
      * It is encapsulated in the SeeAllWaresActionCommand class, using the Command pattern.
      */
@@ -486,6 +462,52 @@ public class WebShop {
             product.PrintInfo();
         }
     }
+
+    /**
+     * The purchaseAWare method displays the purchase menu, which is a sub-menu of the wares menu.
+     * It allows the user to purchase a ware if they are logged in and have enough funds.
+     * It is refactored from the Run method.
+     * It is encapsulated in the PurchaseAWareActionCommand class, using the Command pattern.
+     */
+    public void purchaseAWare() {
+        if (currentCustomer != null) { // Check if user is logged in
+            System.out.println("PURCHASE A WARE");
+            System.out.println("Your funds: " + currentCustomer.getFunds());
+            System.out.println("What would you like to purchase? Type in the number of the ware you want to purchase.");
+
+            for (int i = 0; i < products.size(); i++) {
+                System.out.println(i + 1 + ": " + products.get(i).getName() + ", " + products.get(i).getPrice() + "kr");
+            }
+
+            int currentChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            int index = currentChoice - 1;
+            Product product = products.get(index);
+            if (product.InStock()) {
+                if (currentCustomer.CanAfford(product.getPrice())) {
+                    currentCustomer.removeFunds(product.getPrice());
+                    product.decreaseStock();
+                    currentCustomer.getOrders().add(new Order(product.getName(), product.getPrice(), LocalDateTime.now()));
+                    System.out.println();
+                    System.out.println("Successfully bought " + product.getName());
+                    System.out.println();
+                } else {
+                    System.out.println();
+                    System.out.println("You cannot afford.");
+                    System.out.println();
+                }
+            } else {
+                System.out.println();
+                System.out.println("Not in stock.");
+                System.out.println();
+            }
+        } else {
+            // If user is not logged in, prompt them to log in first
+            System.out.println("Please log in to purchase a ware or register if you are a new user from Login Menu.");
+        }
+    }
+
 
     /**
      * The displaySortMenu method displays the sort menu, which is a sub-menu of the wares menu.
@@ -510,7 +532,11 @@ public class WebShop {
      * It is encapsulated in the SeeYourOrdersActionCommand class, using the Command pattern.
      */
     public void seeYourOrders() {
-        currentCustomer.PrintOrderHistory();
+        if(currentCustomer != null){
+            currentCustomer.PrintOrderHistory();
+        }else {
+            System.out.println("Please log in to see your orders.");
+        }
     }
 
     /**
@@ -519,7 +545,11 @@ public class WebShop {
      * It is encapsulated in the SeeYourInfoActionCommand class, using the Command pattern.
      */
     public void seeYourInfo() {
-        currentCustomer.PrintCustomerInfo();
+        if(currentCustomer != null){
+            currentCustomer.PrintCustomerInfo();
+        } else {
+            System.out.println("Please log in or register to see your info.");
+        }
     }
 
     /**
@@ -530,8 +560,9 @@ public class WebShop {
     public void addFundsToCustomerAccount() {
         int currentAmount = currentCustomer.getFunds();
         System.out.println("Your current funds: " + currentAmount);
-        System.out.println("How much funds would you like to add?");
+        System.out.println("How much funds would you like to add? Please type in the amount");
         int amount = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
         currentCustomer.addFunds(amount);
         System.out.println(amount + " is added to your profile." + " Your current funds: " + currentAmount+amount);
     }
@@ -543,21 +574,35 @@ public class WebShop {
      * It is refactored to use the Builder pattern.
      */
     public void setUsername() {
-        System.out.println("A keyboard appears.");
-        System.out.println("Please type in your username.");
-        String newUsername = scanner.nextLine();
-        currentCustomer = new Customer.Builder(newUsername)
-                .password(currentCustomer.getPassword())
-                .firstName(currentCustomer.getFirstName())
-                .lastName(currentCustomer.getLastName())
-                .email(currentCustomer.getEmail())
-                .age(currentCustomer.getAge())
-                .address(currentCustomer.getAddress())
-                .phoneNumber(currentCustomer.getPhoneNumber())
-                .funds(currentCustomer.getFunds())
-                .orders(currentCustomer.getOrders())
-                .build();
+        if(currentCustomer != null) {
+            System.out.println("A keyboard appears.");
+            System.out.println("Please type in your username.");
+
+            String newUsername = scanner.nextLine().trim();
+
+            boolean isUsernameTaken = isUsernameTaken(newUsername);
+
+            if(!isUsernameTaken) {
+                currentCustomer = new Customer.Builder(newUsername)
+                        .password(currentCustomer.getPassword())
+                        .firstName(currentCustomer.getFirstName())
+                        .lastName(currentCustomer.getLastName())
+                        .email(currentCustomer.getEmail())
+                        .age(currentCustomer.getAge())
+                        .address(currentCustomer.getAddress())
+                        .phoneNumber(currentCustomer.getPhoneNumber())
+                        .funds(currentCustomer.getFunds())
+                        .orders(currentCustomer.getOrders())
+                        .build();
+                System.out.println("Username changed to " + newUsername);
+            } else {
+                System.out.println("Username already taken. Please choose another one.");
+            }
+        } else {
+            System.out.println("Please log in or register to set your username.");
+        }
     }
+
 
     /**
      * The setPassword method sets the password of the current customer.
@@ -566,20 +611,28 @@ public class WebShop {
      * It is refactored to use the Builder pattern.
      */
     public void setPassword() {
-        System.out.println("A keyboard appears.");
-        System.out.println("Please type in your password.");
-        password = scanner.nextLine();
-        currentCustomer = new Customer.Builder(currentCustomer.getUsername())
-                .password(password)
-                .firstName(currentCustomer.getFirstName())
-                .lastName(currentCustomer.getLastName())
-                .email(currentCustomer.getEmail())
-                .age(currentCustomer.getAge())
-                .address(currentCustomer.getAddress())
-                .phoneNumber(currentCustomer.getPhoneNumber())
-                .funds(currentCustomer.getFunds())
-                .orders(currentCustomer.getOrders())
-                .build();
+        if(currentCustomer != null) {
+            System.out.println("A keyboard appears.");
+            System.out.println("Please type in your password.");
+
+            String newPassword = scanner.nextLine().trim();
+
+            currentCustomer = new Customer.Builder(currentCustomer.getUsername())
+                    .password(password)
+                    .firstName(currentCustomer.getFirstName())
+                    .lastName(currentCustomer.getLastName())
+                    .email(currentCustomer.getEmail())
+                    .age(currentCustomer.getAge())
+                    .address(currentCustomer.getAddress())
+                    .phoneNumber(currentCustomer.getPhoneNumber())
+                    .funds(currentCustomer.getFunds())
+                    .orders(currentCustomer.getOrders())
+                    .build();
+
+            System.out.println("A new password is created: " + newPassword);
+        } else {
+            System.out.println("Please log in or register to set your password.");
+        }
     }
 
 
