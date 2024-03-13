@@ -24,12 +24,15 @@ import java.util.*;
 
 public class WebShop {
     boolean running = true;
-    Database database = new Database();
-    ArrayList<Product> products;
-    ArrayList<Customer> customers;
+    //Database database = new Database();
+    DatabaseProxy databaseProxy = new DatabaseProxy();
+    //ArrayList<Product> products;
+    //ArrayList<Customer> customers;
+    ArrayList<Product> products = databaseProxy.getProducts();
+    ArrayList<Customer> customers = databaseProxy.getCustomers();
+
 
     String currentMenu = "main menu";
-    //String currentMenu = "wares menu";
 
     int currentChoice = 1;
     int amountOfOptions = 3;
@@ -46,11 +49,10 @@ public class WebShop {
     Scanner scanner = new Scanner(System.in);
 
     public Map<Button, Command> commands = new HashMap<>();
-    //private List<Runnable> purchaseActions;
 
     public WebShop() {
-        products = database.getProducts();
-        customers = database.getCustomers();
+        products = databaseProxy.getProducts();
+        customers = databaseProxy.getCustomers();
 
         // Back, Quit Button
 
